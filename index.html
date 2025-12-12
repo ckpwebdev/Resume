@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Home | Your Name</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">Your Logo</div>
+    <nav class="main-nav">
+      <a href="index.html" class="active">Home</a>
+      <a href="about.html">About</a>
+      <a href="resume.html">Résumé</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <section class="hero">
+      <h1>Hi, I'm Christopher Pink</h1>
+      <p>Junior web & mobile developer building clean, modern experiences.</p>
+      <a href="resume.html" class="btn-primary">View My Résumé</a>
+    </section>
+
+    <section class="highlight-grid">
+      <article class="card">
+        <h2>Web Development</h2>
+        <p>Modern, responsive websites using HTML, CSS, JavaScript, and .NET.</p>
+      </article>
+      <article class="card">
+        <h2>Mobile Apps</h2>
+        <p>Android and iOS apps with a focus on performance and UX.</p>
+      </article>
+      <article class="card">
+        <h2>Cloud & Tools</h2>
+        <p>Experience with Azure, GitHub, and collaborative remote workflows.</p>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> Your Name. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
