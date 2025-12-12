@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Contact | Your Name</title>
+  <title>Contact | Christopher Pink</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,14 +16,19 @@
     </nav>
   </header>
 
-  <main class="main-content">
-    <section class="page-header">
+  <main class="main-content center-page">
+    <section class="page-header page-header-center">
       <h1>Contact</h1>
       <p>Interested in working together? Reach out below.</p>
     </section>
 
     <section class="contact-section">
-      <form class="contact-form">
+      <form
+        class="contact-form"
+        action="mailto:ckp.webdev@gmail.com"
+        method="post"
+        enctype="text/plain"
+      >
         <label>
           Name
           <input type="text" name="name" required>
@@ -42,7 +47,7 @@
   </main>
 
   <footer class="site-footer">
-    <p>&copy; <span id="year"></span> Your Name. All rights reserved.</p>
+    <p>&copy; <span id="year"></span> Christopher Pink. All rights reserved.</p>
   </footer>
 
   <script>
