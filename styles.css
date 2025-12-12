@@ -113,6 +113,10 @@ body {
   color: var(--muted);
 }
 
+.hero-actions {
+  margin-top: 1.5rem;
+}
+
 /* Cards */
 
 .highlight-grid {
@@ -146,6 +150,18 @@ body {
   font-size: 0.93rem;
 }
 
+.card ul {
+  list-style: disc;
+  margin-left: 1.2rem;
+  margin-top: 0.6rem;
+  color: var(--muted);
+  font-size: 0.93rem;
+}
+
+.card ul li + li {
+  margin-top: 0.3rem;
+}
+
 /* Page headers */
 
 .page-header {
@@ -161,14 +177,14 @@ body {
   color: var(--muted);
 }
 
-/* Centered page variants (used on contact) */
+/* Centered page variants */
 
 .center-page {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: calc(100vh - 140px); /* adjust if header/footer height changes */
+  min-height: calc(100vh - 140px);
 }
 
 .page-header-center {
@@ -196,6 +212,57 @@ body {
 }
 
 /* Contact */
+
+.contact-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.2fr);
+  gap: 2.5rem;
+  align-items: flex-start;
+}
+
+.contact-info {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.contact-info h2 {
+  font-size: 1.1rem;
+  margin-bottom: 0.75rem;
+  color: var(--text);
+}
+
+.contact-info p {
+  margin-bottom: 1.2rem;
+}
+
+.contact-links {
+  display: grid;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.contact-links a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.contact-links a:hover {
+  text-decoration: underline;
+}
+
+.social-icon {
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+}
+
+.contact-detail {
+  margin-bottom: 0.4rem;
+}
 
 .contact-section {
   max-width: 540px;
@@ -265,6 +332,12 @@ body {
 }
 
 /* Responsive tweaks */
+
+@media (max-width: 768px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 @media (max-width: 640px) {
   .site-header {

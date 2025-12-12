@@ -16,33 +16,68 @@
     </nav>
   </header>
 
-  <main class="main-content center-page">
+  <main class="main-content">
     <section class="page-header page-header-center">
       <h1>Contact</h1>
-      <p>Interested in working together? Reach out below.</p>
+      <p>Interested in working together? Reach out using the details or form below.</p>
     </section>
 
-    <section class="contact-section">
-      <form
-        class="contact-form"
-        action="mailto:ckp.webdev@gmail.com"
-        method="post"
-        enctype="text/plain"
-      >
-        <label>
-          Name
-          <input type="text" name="name" required>
-        </label>
-        <label>
-          Email
-          <input type="email" name="email" required>
-        </label>
-        <label>
-          Message
-          <textarea name="message" rows="5" required></textarea>
-        </label>
-        <button type="submit" class="btn-primary">Send Message</button>
-      </form>
+    <section class="contact-grid">
+      <!-- Left column: social + contact info -->
+      <div class="contact-info">
+        <h2>Connect with me</h2>
+        <p>You can connect with me on social media or reach me directly by phone or mail.</p>
+
+        <div class="contact-links">
+          <a href="https://www.facebook.com/" target="_blank" rel="noopener">
+            <img src="facebook.png" alt="Facebook" class="social-icon">Facebook
+          </a>
+          <a href="https://www.instagram.com/" target="_blank" rel="noopener">
+            <img src="instagram.png" alt="Instagram" class="social-icon">Instagram
+          </a>
+          <a href="https://www.linkedin.com/in/christopherkpink" target="_blank" rel="noopener">
+            <img src="linkedin.png" alt="LinkedIn" class="social-icon">LinkedIn
+          </a>
+        </div>
+
+        <div class="contact-detail">
+          <strong>Phone:</strong> 780-938-8718
+        </div>
+        <div class="contact-detail">
+          <strong>Email:</strong>
+          <a href="mailto:ckp.webdev@gmail.com" class="contact-email-link">ckp.webdev@gmail.com</a>
+        </div>
+        <div class="contact-detail">
+          <strong>Mailing Address:</strong><br>
+          7672 89 Ave NW, Edmonton, Alberta<br>
+          T6C 1N3<br>
+          Canada
+        </div>
+      </div>
+
+      <!-- Right column: form -->
+      <section class="contact-section">
+        <form
+          class="contact-form"
+          action="mailto:ckp.webdev@gmail.com"
+          method="post"
+          enctype="text/plain"
+        >
+          <label>
+            Name
+            <input type="text" name="name" required>
+          </label>
+          <label>
+            Email
+            <input type="email" name="email" required>
+          </label>
+          <label>
+            Message
+            <textarea name="message" rows="5" required></textarea>
+          </label>
+          <button type="submit" class="btn-primary">Send Message</button>
+        </form>
+      </section>
     </section>
   </main>
 

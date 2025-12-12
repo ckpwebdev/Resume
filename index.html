@@ -4,6 +4,22 @@
   <meta charset="UTF-8">
   <title>Home | Christopher Pink</title>
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Small tweak so button has space above it */
+    .hero-actions {
+      margin-top: 1.5rem;
+    }
+    .card ul {
+      list-style: disc;
+      margin-left: 1.2rem;
+      margin-top: 0.6rem;
+      color: var(--muted);
+      font-size: 0.93rem;
+    }
+    .card ul li + li {
+      margin-top: 0.3rem;
+    }
+  </style>
 </head>
 <body>
   <header class="site-header">
@@ -18,23 +34,41 @@
 
   <main class="main-content">
     <section class="hero">
-      <h1>Hi, I'm Christopher Pink</h1>
-      <p>Junior web & mobile developer building clean, modern experiences.</p>
-      <a href="resume.html" class="btn-primary">View My Résumé</a>
+      <div>
+        <h1>Hi, I'm Christopher Pink</h1>
+        <p>I'm a mobile and web developer with a diploma from Sundance College, focused on building modern, responsive experiences for web, Android, and iOS.</p>
+        <div class="hero-actions">
+          <a href="resume.html" class="btn-primary">View My Résumé</a>
+        </div>
+      </div>
     </section>
 
     <section class="highlight-grid">
       <article class="card">
         <h2>Web Development</h2>
-        <p>Modern, responsive websites using HTML, CSS, JavaScript, and .NET.</p>
+        <ul>
+          <li>Responsive sites and apps using HTML5, CSS3, JavaScript, and React.</li>
+          <li>Back end development with C# and ASP.NET MVC following MVC patterns.</li>
+          <li>Daily tools include Visual Studio 2022, Visual Studio Code, and GitHub.</li>
+        </ul>
       </article>
+
       <article class="card">
         <h2>Mobile Apps</h2>
-        <p>Android and iOS apps with a focus on performance and UX.</p>
+        <ul>
+          <li>Native Android development with Kotlin and Android Studio.</li>
+          <li>iOS development in Swift using Xcode.</li>
+          <li>Experience with advanced Android development and iOS app structure and lifecycle.</li>
+        </ul>
       </article>
+
       <article class="card">
-        <h2>Cloud & Tools</h2>
-        <p>Experience with Azure, GitHub, and collaborative remote workflows.</p>
+        <h2>Cloud, Tools & Workflow</h2>
+        <ul>
+          <li>Azure App Service, Functions, Storage, and Key Vault aligned with AZ‑204 concepts.</li>
+          <li>LeadNerds CRM, Canva, Asana, Slack, Zoho Mail, Google Workspace, and Zoom for remote work.</li>
+          <li>Structured testing, debugging, and QA practices to keep projects reliable.</li>
+        </ul>
       </article>
     </section>
   </main>
