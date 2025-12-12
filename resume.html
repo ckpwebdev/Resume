@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Résumé | Your Name</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="logo">Your Logo</div>
+    <nav class="main-nav">
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="resume.html" class="active">Résumé</a>
+      <a href="contact.html">Contact</a>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <section class="page-header">
+      <h1>Résumé</h1>
+      <p>Overview of my education, experience, and skills.</p>
+    </section>
+
+    <section class="resume-section">
+      <h2>Experience</h2>
+      <!-- Experience entries go here -->
+    </section>
+
+    <section class="resume-section">
+      <h2>Education</h2>
+      <!-- Education entries go here -->
+    </section>
+
+    <section class="resume-section">
+      <h2>Skills</h2>
+      <!-- Skills list goes here -->
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>&copy; <span id="year"></span> Your Name. All rights reserved.</p>
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
