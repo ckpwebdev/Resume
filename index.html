@@ -2,24 +2,9 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Home | Christopher Pink</title>
+  <title>Christopher Pink | Mobile & Web Developer</title>
   <link rel="stylesheet" href="styles.css">
-  <style>
-    /* Small tweak so button has space above it */
-    .hero-actions {
-      margin-top: 1.5rem;
-    }
-    .card ul {
-      list-style: disc;
-      margin-left: 1.2rem;
-      margin-top: 0.6rem;
-      color: var(--muted);
-      font-size: 0.93rem;
-    }
-    .card ul li + li {
-      margin-top: 0.3rem;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
   <header class="site-header">
@@ -33,41 +18,49 @@
   </header>
 
   <main class="main-content">
-    <section class="hero">
-      <div>
+    <section class="hero hero-grid">
+      <div class="hero-text">
         <h1>Hi, I'm Christopher Pink</h1>
         <p>I'm a mobile and web developer with a diploma from Sundance College, focused on building modern, responsive experiences for web, Android, and iOS.</p>
         <div class="hero-actions">
           <a href="resume.html" class="btn-primary">View My Résumé</a>
         </div>
       </div>
+      <div class="hero-image-wrap">
+        <img src="index-images/code.png" alt="Code brackets icon representing development" class="hero-image">
+      </div>
     </section>
 
     <section class="highlight-grid">
       <article class="card">
-        <h2>Web Development</h2>
+        <h2>Mobile & Web Development</h2>
+        <p>I build responsive websites and mobile apps with clean, modern interfaces and a focus on usability.</p>
         <ul>
-          <li>Languages and frameworks: HTML5, CSS3, JavaScript, React, C#, ASP.NET MVC.</li>
-          <li>Tools and platforms: Visual Studio 2022, Visual Studio Code, GitHub, Microsoft Azure (App Service, Functions, Storage, Key Vault).</li>
+          <li>React, HTML5, CSS3, JavaScript</li>
+          <li>C#, ASP.NET MVC, REST APIs</li>
+          <li>Android Studio, Kotlin, basic iOS/Swift</li>
         </ul>
       </article>
 
       <article class="card">
-        <h2>App Development</h2>
+        <h2>Cloud & Tools</h2>
+        <p>I work comfortably with cloud platforms and modern developer tooling to ship and maintain projects.</p>
         <ul>
-          <li>Languages and platforms: Kotlin (Android), Swift (iOS), Android SDK, iOS SDK.</li>
-          <li>Tools and environments: Android Studio, Xcode, device emulators, and debugging tools for Android and iOS.</li>
+          <li>Microsoft Azure fundamentals</li>
+          <li>Git/GitHub collaboration workflows</li>
+          <li>VS Code, JetBrains Rider, Android Studio</li>
         </ul>
       </article>
 
-            <article class="card">
-        <h2>Other Skills</h2>
+      <article class="card">
+        <h2>Quality & Collaboration</h2>
+        <p>I care about reliability, testing, and communication to keep projects moving in the right direction.</p>
         <ul>
-          <li>Testing and QA: structured testing, debugging, troubleshooting, and software quality fundamentals.</li>
-          <li>Productivity and office tools: Microsoft Excel, Word, Outlook, and Google Workspace.</li>
+          <li>Manual testing and debugging practices</li>
+          <li>Agile-friendly communication and documentation</li>
+          <li>Experience working with marketing and CRM teams</li>
         </ul>
       </article>
-
     </section>
   </main>
 

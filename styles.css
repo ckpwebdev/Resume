@@ -105,24 +105,42 @@ body {
 /* Hero / landing */
 
 .hero {
-  display: grid;
-  gap: 1.75rem;
   margin-bottom: 3rem;
 }
 
-.hero h1 {
-  font-size: clamp(2.2rem, 7vw, 3rem);
-  letter-spacing: -0.04em;
+.hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
+  gap: 2rem;
+  align-items: center;
 }
 
-.hero p {
+.hero-text h1 {
+  font-size: clamp(2.2rem, 7vw, 3rem);
+  letter-spacing: -0.04em;
+  margin-bottom: 0.5rem;
+}
+
+.hero-text p {
   max-width: 32rem;
   color: var(--muted);
-  margin-top: 0.5rem;
+  margin-top: 0.25rem;
 }
 
 .hero-actions {
   margin-top: 1.5rem;
+}
+
+.hero-image-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.hero-image {
+  max-width: 260px;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
 }
 
 /* Cards */
@@ -382,6 +400,19 @@ body {
 
   .badge-row {
     justify-content: flex-start;
+  }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .hero-image-wrap {
+    margin-top: 1rem;
+  }
+
+  .hero-image {
+    max-width: 220px;
   }
 }
 
