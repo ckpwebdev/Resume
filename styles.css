@@ -297,6 +297,39 @@ body {
   border-color: var(--accent);
 }
 
+/* Badges on About page */
+
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+}
+
+.badge-card {
+  display: inline-flex;
+  padding: 0.75rem;
+  border-radius: var(--radius);
+  background: radial-gradient(circle at top left, #111827, var(--card-bg));
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-fast),
+              box-shadow var(--transition-fast),
+              border-color var(--transition-fast);
+}
+
+.badge-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 22px 40px rgba(15, 23, 42, 0.85);
+}
+
+.badge-image {
+  max-width: 160px;
+  height: auto;
+  display: block;
+}
+
 /* Buttons */
 
 .btn-primary {
