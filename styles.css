@@ -131,9 +131,18 @@ body {
   margin-top: 1.5rem;
 }
 
+/* Image + glow */
+
 .hero-image-wrap {
   display: flex;
   justify-content: center;
+  padding: 1.4rem;
+  border-radius: 20px;
+  background: radial-gradient(
+    circle at top,
+    rgba(56, 189, 248, 0.18),
+    transparent 65%
+  );
 }
 
 .hero-image {
@@ -141,6 +150,17 @@ body {
   width: 100%;
   height: auto;
   border-radius: 16px;
+  box-shadow:
+    0 0 25px rgba(56, 189, 248, 0.65),
+    0 0 55px rgba(56, 189, 248, 0.35);
+}
+
+@media (hover: hover) {
+  .hero-image-wrap:hover .hero-image {
+    box-shadow:
+      0 0 30px rgba(56, 189, 248, 0.9),
+      0 0 65px rgba(56, 189, 248, 0.55);
+  }
 }
 
 /* Cards */
