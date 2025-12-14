@@ -8,7 +8,7 @@
 </head>
 <body>
   <header class="site-header">
-    <div class="logo">Christopher Pink - Mobile & Web Developer</div>
+    <div class="logo">Christopher Pink</div>
     <nav class="main-nav">
       <a href="index.html" class="active">Home</a>
       <a href="about.html">About</a>
@@ -62,12 +62,28 @@
         </ul>
       </article>
     </section>
+
+    <!-- Scrolling skills bar -->
+    <section class="skills-section">
+      <h2 class="skills-heading">Technologies I Work With</h2>
+      <div class="marquee">
+        <ul class="marquee-content">
+          <li><img src="index-images/html.png" alt="HTML5 logo"></li>
+          <li><img src="index-images/css.png" alt="CSS3 logo"></li>
+          <li><img src="index-images/java.png" alt="Java logo"></li>
+          <li><img src="index-images/c-sharp.png" alt="C# logo"></li>
+          <li><img src="index-images/kotlin.png" alt="Kotlin logo"></li>
+          <li><img src="index-images/swift.png" alt="Swift logo"></li>
+        </ul>
+      </div>
+    </section>
   </main>
 
   <footer class="site-footer">
     <p>&copy; <span id="year"></span> Christopher Pink. All rights reserved.</p>
   </footer>
 
+  <script src="skills-marquee.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
