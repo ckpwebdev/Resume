@@ -43,6 +43,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 1rem;
 }
 
 .logo {
@@ -51,6 +52,12 @@ body {
   text-transform: uppercase;
   font-size: 0.95rem;
   color: var(--muted);
+}
+
+.main-nav {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .main-nav a {
@@ -104,13 +111,14 @@ body {
 }
 
 .hero h1 {
-  font-size: clamp(2.4rem, 4vw, 3rem);
+  font-size: clamp(2.2rem, 7vw, 3rem);
   letter-spacing: -0.04em;
 }
 
 .hero p {
   max-width: 32rem;
   color: var(--muted);
+  margin-top: 0.5rem;
 }
 
 .hero-actions {
@@ -168,7 +176,8 @@ body {
   margin-bottom: 2rem;
 }
 
-.page-header h1 {
+.page-header h1,
+.page-header h2 {
   font-size: 2rem;
   margin-bottom: 0.4rem;
 }
@@ -370,18 +379,33 @@ body {
   .contact-grid {
     grid-template-columns: 1fr;
   }
+
+  .badge-row {
+    justify-content: flex-start;
+  }
 }
 
 @media (max-width: 640px) {
   .site-header {
     padding-inline: 5vw;
+    flex-direction: column;
+    align-items: flex-start;
   }
 
-  .main-content {
-    padding-inline: 5vw;
+  .main-nav {
+    margin-top: 0.4rem;
   }
 
   .main-nav a {
     margin-left: 1rem;
+    margin-top: 0.25rem;
+  }
+
+  .main-content {
+    padding: 2.2rem 5vw 3rem;
+  }
+
+  .hero {
+    margin-bottom: 2.2rem;
   }
 }
