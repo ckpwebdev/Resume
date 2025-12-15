@@ -177,7 +177,6 @@ body {
   width: 100%;
   height: auto;
   border-radius: 16px;
-  box-shadow: var(--shadow-soft);
 }
 
 /* Cards */
