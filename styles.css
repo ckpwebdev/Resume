@@ -177,7 +177,6 @@ body {
   width: 100%;
   height: auto;
   border-radius: 16px;
-  border: 1px solid rgba(56, 189, 248, 0.25);
   box-shadow: var(--shadow-soft);
 }
 
