@@ -86,21 +86,8 @@
     </section>
   </main>
 
- <footer class="site-footer">
-  <p class="tech-footer">
-    Written in HTML5, JavaScript & CSS3
-    <img src="footer-images/sm-html.png" alt="HTML5" class="tech-icon">
-    <img src="footer-images/sm-java.png" alt="JavaScript" class="tech-icon">
-    <img src="footer-images/sm-css.png" alt="CSS3" class="tech-icon">
-    . Powered by VS Code & GitHub 
-    <img src="footer-images/sm-vscode.png" alt="Visual Studio Code" class="tech-icon">
-    <img src="footer-images/sm-github.png" alt="GitHub" class="tech-icon">
-    .
-  </p>
-
-  <p>&copy; <span id="year"></span> Christopher Pink. All rights reserved.</p>
-</footer>
-
+ <footer class="site-footer" id="site-footer"></footer>
+  <script src="footer.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
   </script>
