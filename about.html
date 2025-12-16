@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <title>About | Christopher Pink</title>
   <link rel="stylesheet" href="styles.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body>
   <header class="site-header">
@@ -18,49 +17,65 @@
   </header>
 <br>
   <main class="main-content">
-    <section class="page-header">
+    <!-- Intro -->
+    <section class="page-header page-header-center">
       <h1>About Me</h1>
-      <p>Learn more about my background, skills, and interests as a mobile and web developer based in Edmonton, Alberta.</p>
+      <p>Mobile & web developer based in Edmonton, Alberta, focused on building reliable, user-friendly experiences for the web, Android, and iOS.</p>
     </section>
 
-    <section class="two-column">
+    <!-- Who I am / What I do -->
+    <section class="two-column" style="margin-bottom: 2.5rem;">
       <div>
         <h2>Who I Am</h2>
         <p>
-          I am a junior mobile and web developer with a Mobile &amp; Web Developer diploma, focused on building
-          modern, responsive experiences for web, Android, and iOS. I enjoy turning real-world problems into
-          clean, maintainable solutions and collaborating with teams to ship useful products.
+          I am a junior mobile and web developer with a Mobile & Web Developer diploma from Sundance College.
+          I enjoy turning real-world problems into clean, maintainable solutions and collaborating with teams to ship useful products.
         </p>
-      </div>
-      <div>
-        <h2>What I Do</h2>
         <p>
-          My work spans full-stack web development with C#, ASP.NET MVC, React, HTML5, and CSS3, through to native
-          Android and iOS apps using Kotlin, Swift, Android Studio, and Xcode. I also bring experience with Azure,
-          QA and testing, and remote collaboration tools that keep projects organized and on track.
+          My background as a computer technician and my experience in digital marketing give me a strong mix of technical skills,
+          troubleshooting ability, and an understanding of how software supports business goals.
         </p>
       </div>
-    
+
+      <div>
+        <h2>How I Work</h2>
+        <p>
+          I care about building responsive, accessible interfaces, keeping code organized, and communicating clearly with clients and teammates.
+          Reliability, testing, and small, frequent improvements are important parts of how I like to work.
+        </p>
+        <p>
+          I’m comfortable working independently or in a remote team, using modern tools like GitHub, Azure, and project management platforms
+          to keep projects on track.
+        </p>
+      </div>
+    </section>
+
+    <!-- Tech focus -->
+    <section class="card" style="margin-bottom: 2.5rem;">
+      <h2>What I Work With</h2>
+      <p>My current focus is on modern web and mobile technologies that help ship production-ready apps.</p>
+      <ul>
+        <li>Frontend: React, HTML5, CSS3, modern JavaScript.</li>
+        <li>Backend & APIs: C#, ASP.NET MVC, RESTful services, basic SQL.</li>
+        <li>Mobile: Android Studio with Kotlin, introductory iOS development with Swift and Xcode.</li>
+        <li>Cloud & tooling: Azure, GitHub, VS Code, testing and QA practices.</li>
+      </ul>
+    </section>
   </main>
 
   <footer class="site-footer">
-  <p class="tech-footer">
-    Written in HTML5, JavaScript & CSS3
-    <img src="footer-images/sm-html.png" alt="HTML5" class="tech-icon">
-    <img src="footer-images/sm-java.png" alt="JavaScript" class="tech-icon">
-    <img src="footer-images/sm-css.png" alt="CSS3" class="tech-icon">
-    . Powered by VS Code & GitHub 
-    <img src="footer-images/sm-vscode.png" alt="Visual Studio Code" class="tech-icon">
-    <img src="footer-images/sm-github.png" alt="GitHub" class="tech-icon">
-    .
-  </p>
+    <p class="tech-footer">
+      Written in HTML5, JavaScript & CSS3
+      <img src="footer-images/sm-html.png" alt="HTML5" class="tech-icon">
+      <img src="footer-images/sm-java.png" alt="JavaScript" class="tech-icon">
+      <img src="footer-images/sm-css.png" alt="CSS3" class="tech-icon">
+      . Powered by VS Code & GitHub 
+      <img src="footer-images/sm-vscode.png" alt="Visual Studio Code" class="tech-icon">
+      <img src="footer-images/sm-github.png" alt="GitHub" class="tech-icon">
+      .
+    </p>
 
-  <p>&copy; <span id="year"></span> Christopher Pink. All rights reserved.</p>
-</footer>
-
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
+    <p>&copy; 2025 Christopher Pink. All rights reserved.</p>
+  </footer>
 </body>
 </html>
-
