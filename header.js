@@ -2,6 +2,7 @@
   const header = document.getElementById('site-header');
   if (!header) return;
 
+  // Determine current page file name (e.g., "index.html")
   const path = window.location.pathname;
   const page = path.substring(path.lastIndexOf('/') + 1) || 'index.html';
 
@@ -12,14 +13,22 @@
     { href: 'contact.html', label: 'Contact' }
   ];
 
-  const navLinks = links.map(link => {
-    const isActive = page === '' ? link.href === 'index.html' : page === link.href;
-    const activeClass = isActive ? ' class="active"' : '';
-    return `<a href="${link.href}"${activeClass}>${link.label}</a>`;
-  }).join('\n      ');
+  const navLinks = links
+    .map(link => {
+      const isActive = page === '' ? link.href === 'index.html' : page === link.href;
+      const activeClass = isActive ? ' class="active"' : '';
+      return `<a href="${link.href}"${activeClass}>${link.label}</a>`;
+    })
+    .join('\n      ');
 
   header.innerHTML = `
-    <div class="logo">Christopher Pink - Mobile &amp; Web Developer</div>
+    <div class="logo">
+      <span class="logo-mark">CP</span>
+      <span class="logo-text">
+        <span class="logo-name">Christopher Pink</span>
+        <span class="logo-tagline">Mobile &amp; Web Developer</span>
+      </span>
+    </div>
     <nav class="main-nav">
       ${navLinks}
     </nav>

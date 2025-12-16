@@ -38,14 +38,18 @@ body {
   flex-direction: column;
 }
 
-/* Layout */
+/* Layout – header */
 
 .site-header {
   position: sticky;
   top: 0;
   z-index: 20;
   backdrop-filter: blur(14px);
-  background: linear-gradient(to bottom, rgba(15, 23, 42, 0.95), rgba(15, 23, 42, 0.85));
+  background: linear-gradient(
+    to bottom,
+    rgba(15, 23, 42, 0.96),
+    rgba(15, 23, 42, 0.88)
+  );
   border-bottom: 1px solid rgba(15, 23, 42, 0.9);
   padding: 0.75rem 7vw;
   display: flex;
@@ -54,13 +58,48 @@ body {
   gap: 1rem;
 }
 
+/* Logo cluster injected by header.js */
+
 .logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.logo-mark {
+  width: 28px;
+  height: 28px;
+  border-radius: 999px;
+  background: radial-gradient(circle at 30% 20%, #38bdf8, #0ea5e9);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
   font-weight: 700;
-  letter-spacing: 0.08em;
+  color: #0b1120;
+  box-shadow: 0 8px 18px rgba(56, 189, 248, 0.45);
+}
+
+.logo-text {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.1;
+}
+
+.logo-name {
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  font-size: 0.95rem;
+  font-size: 1rem;
   color: var(--accent);
 }
+
+.logo-tagline {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* Navigation */
 
 .main-nav {
   display: flex;
@@ -75,7 +114,9 @@ body {
   font-size: 0.95rem;
   position: relative;
   padding-bottom: 0.2rem;
-  transition: color var(--transition-fast);
+  transition:
+    color var(--transition-fast),
+    opacity var(--transition-fast);
 }
 
 .main-nav a::after {
@@ -85,12 +126,13 @@ body {
   bottom: 0;
   width: 0;
   height: 2px;
-  background: var(--accent);
+  background: linear-gradient(to right, #38bdf8, #0ea5e9);
   transition: width var(--transition-fast);
 }
 
 .main-nav a:hover {
   color: var(--text);
+  opacity: 0.9;
 }
 
 .main-nav a:hover::after,
@@ -101,6 +143,8 @@ body {
 .main-nav a.active {
   color: var(--accent);
 }
+
+/* Main layout */
 
 .main-content {
   flex: 1;
@@ -552,6 +596,11 @@ body {
   justify-content: center;
 }
 
+.resume-download {
+  margin: 0 auto 2.5rem;
+  text-align: center;
+}
+
 /* Responsive tweaks */
 
 @media (max-width: 768px) {
@@ -616,7 +665,9 @@ body {
   }
 }
 
-.resume-download {
-  margin: 0 auto 2.5rem;
-  text-align: center;
+.tech-stack,
+.tech-tools {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
