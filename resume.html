@@ -15,88 +15,89 @@
       <a href="contact.html">Contact</a>
     </nav>
   </header>
+<br>
+  <main class="main-content">
+  <section class="page-header page-header-center">
+    <h1>Résumé</h1>
+    <p>For a complete overview of my experience, education, and technical skills, please download my résumé as a PDF.</p>
+  </section>
+<br>
+  <section class="contact-section resume-download">
+  <a
+    href="Christopher Pink - Resume.pdf"
+    class="btn-primary"
+    target="_blank"
+    rel="noopener"
+  >
+    Download Résumé (PDF)
+  </a>
+</section>
+<br>
+<br>
+  <section class="page-header page-header-center" style="margin-top: 2.5rem;">
+    <h2>Certifications</h2>
+    <p>These credentials highlight my commitment to strong technical skills and professional standards.</p>
+  </section>
 
-  <main class="main-content center-page">
-    <section class="page-header page-header-center">
-      <h1>Résumé</h1>
-      <p>For a complete overview of my experience, education, and technical skills, please download my résumé as a PDF.</p>
-    </section>
-
-    <section class="contact-section" style="text-align:center;">
-      <a
-        href="Christopher Pink - Resume.pdf"
-        class="btn-primary"
-        target="_blank"
-        rel="noopener"
+  <section class="badge-row centered-section">
+    <a
+      href="https://certificates.simnetonline.com/a00e0c1f-77a8-4229-badf-da058744e1fd#acc.U041tCrj"
+      target="_blank"
+      rel="noopener"
+      class="badge-card"
+    >
+      <img
+        src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/120977483"
+        alt="Microsoft Office SIMnet credential badge"
+        class="badge-image"
       >
-        Download Résumé (PDF)
-      </a>
-    </section>
+    </a>
 
-    </section>
-
-    <section class="page-header" style="margin-top: 2.5rem;">
-      <h2>Certifications</h2>
-      <p>These credentials highlight my commitment to strong technical skills and professional standards.</p>
-    </section>
-
-    <section class="badge-row">
-      <a
-        href="https://certificates.simnetonline.com/a00e0c1f-77a8-4229-badf-da058744e1fd#acc.U041tCrj"
-        target="_blank"
-        rel="noopener"
-        class="badge-card"
+    <a
+      href="https://certificates.simnetonline.com/79b633a7-f5d8-470b-9f1c-1b7b3117ae09#acc.6RDlLmgP"
+      target="_blank"
+      rel="noopener"
+      class="badge-card"
+    >
+      <img
+        src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/124055789"
+        alt="Microsoft Office SIMnet advanced credential badge"
+        class="badge-image"
       >
-        <img
-          src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/120977483"
-          alt="Microsoft Office SIMnet credential badge"
-          class="badge-image"
-        >
-      </a>
+    </a>
 
-      <a
-        href="https://certificates.simnetonline.com/79b633a7-f5d8-470b-9f1c-1b7b3117ae09#acc.6RDlLmgP"
-        target="_blank"
-        rel="noopener"
-        class="badge-card"
+    <a
+      href="https://www.credential.net/6986b5a2-c214-49e5-b4bb-a270a176175e#acc.p4FmQY7Z"
+      target="_blank"
+      rel="noopener"
+      class="badge-card"
+    >
+      <img
+        src="https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/112657732"
+        alt="CIPS Alberta Membership certificate for Christopher Pink"
+        class="badge-image"
       >
-        <img
-          src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/124055789"
-          alt="Microsoft Office SIMnet advanced credential badge"
-          class="badge-image"
-        >
-      </a>
-
-      <a
-        href="https://www.credential.net/6986b5a2-c214-49e5-b4bb-a270a176175e#acc.p4FmQY7Z"
-        target="_blank"
-        rel="noopener"
-        class="badge-card"
-      >
-        <img
-          src="https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/112657732"
-          alt="CIPS Alberta Membership certificate for Christopher Pink"
-          class="badge-image"
-        >
-      </a>
-    </section>
-
-  </main>
+    </a>
+  </section>
+</main>
 
   <footer class="site-footer">
     <p class="tech-footer">
-      Written in HTML5
+      Written in HTML5, JavaScript & CSS3
       <img src="footer-images/sm-html.png" alt="HTML5" class="tech-icon">
-      , CSS3
-      <img src="footer-images/sm-css.png" alt="CSS3" class="tech-icon">
-      , and JavaScript
       <img src="footer-images/sm-java.png" alt="JavaScript" class="tech-icon">
-      using Visual Studio Code
+      <img src="footer-images/sm-css.png" alt="CSS3" class="tech-icon">
+      . Powered by VS Code & GitHub 
       <img src="footer-images/sm-vscode.png" alt="Visual Studio Code" class="tech-icon">
+      <img src="footer-images/sm-github.png" alt="GitHub" class="tech-icon">
       .
     </p>
 
-    <p>&copy; 2025 Christopher Pink. All rights reserved.</p>
+    <p>&copy; <span id="year"></span> Christopher Pink. All rights reserved.</p>
   </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
 </body>
 </html>
