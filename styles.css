@@ -608,8 +608,16 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .contact-section {
+    max-width: 100%;
+  }
+
+  .contact-form {
+    gap: 1.2rem;
+  }
+
   .badge-row {
-    justify-content: flex-start;
+    justify-content: center;
   }
 
   .hero-grid {
@@ -638,6 +646,10 @@ body {
   .marquee::after {
     width: 3rem;
   }
+
+  .highlight-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 @media (max-width: 640px) {
@@ -649,11 +661,15 @@ body {
 
   .main-nav {
     margin-top: 0.4rem;
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
   }
 
   .main-nav a {
-    margin-left: 1rem;
+    margin-left: 0;
+    margin-right: 1rem;
     margin-top: 0.25rem;
+    font-size: 0.9rem;
   }
 
   .main-content {
