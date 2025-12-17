@@ -8,21 +8,20 @@
 </head>
 <body>
   <header class="site-header" id="site-header"></header>
-    <script src="header.js"></script>
 <br>
   <main class="main-content">
     <!-- Intro -->
     <section class="page-header page-header-center">
       <h1>About Me</h1>
-      <p>Mobile & web developer based in Edmonton, Alberta, focused on building reliable, user-friendly experiences for the web, Android, and iOS.</p>
+      <p>Mobile &amp; web developer based in Edmonton, Alberta, focused on building reliable, user-friendly experiences for the web, Android, and iOS.</p>
     </section>
 
-    <!-- Who I am / What I do -->
+    <!-- Who I Am / How I Work -->
     <section class="two-column" style="margin-bottom: 2.5rem;">
       <div>
-        <h2>Who I Am</h2>
+        <h2 class="about-subheading">Who I Am</h2>
         <p>
-          I am a junior mobile and web developer with a Mobile & Web Developer diploma from Sundance College.
+          I am a junior mobile and web developer with a Mobile &amp; Web Developer diploma from Sundance College.
           I enjoy turning real-world problems into clean, maintainable solutions and collaborating with teams to ship useful products.
         </p>
         <p>
@@ -32,7 +31,7 @@
       </div>
 
       <div>
-        <h2>How I Work</h2>
+        <h2 class="about-subheading">How I Work</h2>
         <p>
           I care about building responsive, accessible interfaces, keeping code organized, and communicating clearly with clients and teammates.
           Reliability, testing, and small, frequent improvements are important parts of how I like to work.
@@ -44,23 +43,25 @@
       </div>
     </section>
 
-    <!-- Tech focus -->
-    <section class="card" style="margin-bottom: 2.5rem;">
-      <h2>What I Work With</h2>
+    <!-- What I Work With (in a card for accent styling) -->
+    <section class="page-header page-header-center">
+      <h2 class="about-subheading">What I Work With</h2>
       <p>My current focus is on modern web and mobile technologies that help ship production-ready apps.</p>
+    </section>
+
+    <section class="card" style="margin-bottom: 2.5rem;">
       <ul>
         <li>Frontend: React, HTML5, CSS3, modern JavaScript.</li>
-        <li>Backend & APIs: C#, ASP.NET MVC, RESTful services, basic SQL.</li>
+        <li>Backend &amp; APIs: C#, ASP.NET MVC, RESTful services, basic SQL.</li>
         <li>Mobile: Android Studio with Kotlin, introductory iOS development with Swift and Xcode.</li>
-        <li>Cloud & tooling: Azure, GitHub, VS Code, testing and QA practices.</li>
+        <li>Cloud &amp; tooling: Azure, GitHub, VS Code, testing and QA practices.</li>
       </ul>
     </section>
   </main>
 
   <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="header.js"></script>
   <script src="footer.js"></script>
-  <script>
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
 </body>
 </html>

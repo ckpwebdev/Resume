@@ -538,6 +538,11 @@ body {
   display: block;
 }
 
+/* About page subheadings */
+.about-subheading {
+  color: var(--accent);
+}
+
 /* Buttons */
 
 .btn-primary {

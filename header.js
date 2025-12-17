@@ -23,7 +23,7 @@
 
   header.innerHTML = `
     <div class="logo">
-      <span class="logo-mark">CP</span>
+      <span class="logo-mark">CKP</span>
       <span class="logo-text">
         <span class="logo-name">Christopher Pink</span>
         <span class="logo-tagline">Mobile &amp; Web Developer</span>
