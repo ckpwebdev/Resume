@@ -1,14 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 
-
 <head>
   <meta charset="UTF-8">
   <title>Resume | Christopher Pink</title>
   <link rel="stylesheet" href="styles.css">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
 
+  <!-- TestDome certificate embed stylesheet -->
+  <script>
+    var stylesheet = "https://www.testdome.com/content/certificates/embed.css";
+    link = document.createElement("link");
+    link.href = stylesheet;
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.media = "screen,print";
+    document.getElementsByTagName("head")[0].appendChild(link);
+  </script>
+</head>
 
 <body>
   <header class="site-header" id="site-header"></header>
@@ -75,18 +84,16 @@
         >
       </a>
 
-      <!-- TestDome SQL Certificate -->
+      <!-- TestDome SQL Certificate (embedded, styled like other badges) -->
       <a
         href="https://www.testdome.com/certificates/35a84a7d8f494a66bcc3f9ea07447c71"
+        class="testdome-certificate-stamp silver badge-card testdome-badge"
         target="_blank"
         rel="noopener"
-        class="badge-card"
       >
-        <img
-          src="resume-images/testdome.png"
-          alt="Christopher Pink TestDome SQL certificate"
-          class="badge-image"
-        >
+        <span class="testdome-certificate-name">Christopher Pink</span>
+        <span class="testdome-certificate-test-name">SQL</span>
+        <span class="testdome-certificate-card-logo">TestDome<br>Certificate</span>
       </a>
     </section>
   </main>
@@ -95,6 +102,6 @@
 
   <script src="footer.js"></script>
   <script src="header.js"></script>
-  
+
 </body>
 </html>
