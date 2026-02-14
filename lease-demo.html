@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lease Agreement Demo | Christopher Pink</title>
+
+  <!-- Site styles (same as the rest of your site) -->
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- jsPDF -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- Small page-only tweaks that reuse your CSS variables -->
+  <style>
+    /* Your global form styling covers inputs/textarea; this brings selects in line */
+    .contact-form select {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      padding: 0.6rem 0.7rem;
+      color: var(--text);
+      font: inherit;
+    }
+    .contact-form select:focus {
+      outline: 1px solid var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* Preview formatting inside a card */
+    .lease-preview {
+      white-space: pre-wrap;
+      line-height: 1.5;
+      color: var(--muted);
+      margin-top: 0.75rem;
+    }
+
+    .helper-text {
+      color: var(--muted);
+      font-size: 0.93rem;
+      margin-top: 0.35rem;
+    }
+
+    .actions-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      margin-top: 0.5rem;
+    }
+
+    /* Make the secondary button look “site-native” without adding new global classes */
+    .btn-secondary {
+      display: inline-block;
+      padding: 0.7rem 1.4rem;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.45);
+      background: transparent;
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform var(--transition-fast), filter var(--transition-fast);
+    }
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      filter: brightness(1.05);
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Same header pattern as your other pages -->
+  <header class="site-header" id="site-header"></header>
+
+  <main class="main-content">
+    <section class="page-header page-header-center">
+      <h1>Lease Agreement Generator (Demo)</h1>
+      <p>
+        Interactive questionnaire + PDF output to demonstrate content implementation workflows.
+        Demo only, not legal advice.
+      </p>
+    </section>
+
+    <section class="two-column">
+      <!-- Left: Form -->
+      <section class="card">
+        <h2>Lease details</h2>
+        <p class="helper-text">Fill this out and generate a preview + PDF.</p>
+
+        <form id="leaseForm" class="contact-form">
+          <label>
+            Date of agreement
+            <input type="date" id="date" required />
+          </label>
+
+          <label>
+            Landlord name
+            <input type="text" id="landlord" placeholder="e.g., Jane Smith" required />
+          </label>
+
+          <label>
+            Landlord address
+            <input type="text" id="landlordAddr" placeholder="Street, City, Province" required />
+          </label>
+
+          <label>
+            Tenant name
+            <input type="text" id="tenant" placeholder="e.g., John Doe" required />
+          </label>
+
+          <label>
+            Property address
+            <input type="text" id="property" placeholder="Street, City, Province" required />
+          </label>
+
+          <label>
+            Monthly rent (CAD)
+            <input type="number" id="rent" min="0" step="0.01" placeholder="e.g., 1500" required />
+          </label>
+
+          <label>
+            Term
+            <select id="term" required>
+              <option value="" selected disabled>Select...</option>
+              <option value="12 months fixed">12 months fixed</option>
+              <option value="Month-to-month">Month-to-month</option>
+            </select>
+          </label>
+
+          <label>
+            Utilities included (comma-separated)
+            <input type="text" id="utilities" placeholder="e.g., Water, Heat" />
+          </label>
+
+          <label>
+            Security deposit (CAD)
+            <input type="number" id="deposit" min="0" step="0.01" placeholder="e.g., 1500" required />
+          </label>
+
+          <label>
+            Pets allowed?
+            <select id="pets">
+              <option value="No" selected>No</option>
+              <option value="Yes, with approval">Yes, with approval</option>
+            </select>
+          </label>
+
+          <div class="actions-row">
+            <button type="submit" class="btn-primary">Generate PDF</button>
+            <button type="button" id="btnPreview" class="btn-secondary">Update preview</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Right: Preview -->
+      <section class="card">
+        <h2>Preview</h2>
+        <p class="helper-text">
+          This preview updates when you click “Update preview” (or after generating the PDF).
+        </p>
+        <pre id="preview" class="lease-preview">Fill in the form to see a preview here.</pre>
+      </section>
+    </section>
+  </main>
+
+  <!-- Same footer pattern as your other pages -->
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="footer.js"></script>
+  <script src="header.js"></script>
+
+  <script>
+    const form = document.getElementById("leaseForm");
+    const previewEl = document.getElementById("preview");
+    const btnPreview = document.getElementById("btnPreview");
+
+    // Default date like your original demo
+    document.getElementById("date").valueAsDate = new Date();
+
+    btnPreview.addEventListener("click", () => {
+      const data = readFormData();
+      previewEl.textContent = buildPreviewText(data);
+    });
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const data = readFormData();
+
+      // Update on submit too
+      previewEl.textContent = buildPreviewText(data);
+
+      // Generate PDF
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(16);
+      doc.text("Residential Tenancy Agreement (Demo)", 14, 18);
+
+      doc.setFontSize(11);
+      let y = 30;
+
+      const lines = [
+        `Date: ${data.date}`,
+        `Landlord: ${data.landlord}`,
+        `Landlord Address: ${data.landlordAddr}`,
+        `Tenant: ${data.tenant}`,
+        `Property: ${data.property}`,
+        `Rent: $${data.rent}/month`,
+        `Term: ${data.term}`,
+        `Utilities: ${data.utilities}`,
+        `Security Deposit: $${data.deposit}`,
+        `Pets: ${data.pets}`,
+        "",
+        "Demo only. Not legal advice."
+      ];
+
+      lines.forEach((line) => {
+        doc.text(line, 14, y);
+        y += 7;
+      });
+
+      doc.save("lease-agreement-demo.pdf");
+    });
+
+    function readFormData() {
+      return {
+        date: document.getElementById("date").value,
+        landlord: document.getElementById("landlord").value.trim(),
+        landlordAddr: document.getElementById("landlordAddr").value.trim(),
+        tenant: document.getElementById("tenant").value.trim(),
+        property: document.getElementById("property").value.trim(),
+        rent: document.getElementById("rent").value,
+        term: document.getElementById("term").value,
+        utilities: (document.getElementById("utilities").value || "None").trim(),
+        deposit: document.getElementById("deposit").value,
+        pets: document.getElementById("pets").value
+      };
+    }
+
+    function buildPreviewText(data) {
+      return (
+`RESIDENTIAL TENANCY AGREEMENT (Demo)
+
+Date: ${data.date}
+
+Landlord: ${data.landlord}
+Landlord Address: ${data.landlordAddr}
+
+Tenant: ${data.tenant}
+
+Property: ${data.property}
+
+Rent: $${data.rent}/month
+Term: ${data.term}
+Utilities Included: ${data.utilities}
+Security Deposit: $${data.deposit}
+Pets: ${data.pets}
+
+This is a demo questionnaire-to-document flow for portfolio purposes.`
+      );
+    }
+  </script>
+</body>
+</html>

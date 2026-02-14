@@ -10,6 +10,7 @@
     { href: 'index.html', label: 'Home' },
     { href: 'about.html', label: 'About' },
     { href: 'resume.html', label: 'Resume' },
+    { href: "portfolio.html", label: "Portfolio" },
     { href: 'contact.html', label: 'Contact' }
   ];
 

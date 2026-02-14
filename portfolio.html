@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Portfolio | Christopher Pink</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- Page-only layout fixes for a single-card grid -->
+  <style>
+    /* With only one card, highlight-grid would otherwise stretch full-width [file:62] */
+    .highlight-grid.one-card {
+      grid-template-columns: minmax(0, 560px);
+      justify-content: center;
+
+      /* Extra space between header area and the card */
+      margin-top: 1.5rem;
+    }
+
+    .highlight-grid.one-card .card {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header" id="site-header"></header>
+
+  <main class="main-content">
+    <section class="page-header page-header-center">
+      <h1>Portfolio</h1>
+      <p>Project demos relevant to content implementation and interactive templates.</p>
+    </section>
+
+    <section class="highlight-grid one-card">
+      <article class="card">
+        <h2>Interactive Lease Generator (Demo)</h2>
+        <p>
+          A questionnaire-style form that generates a preview and downloadable PDF output.
+        </p>
+
+        <div class="centered-section">
+          <a class="btn-primary" href="lease-demo.html">Open demo</a>
+        </div>
+      </article>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="footer.js"></script>
+  <script src="header.js"></script>
+</body>
+</html>
