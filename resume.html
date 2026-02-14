@@ -5,20 +5,6 @@
   <title>Resume | Christopher Pink</title>
   <link rel="stylesheet" href="styles.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <!-- Page-only: make diploma larger and centered above other certifications -->
-  <style>
-    .diploma-image {
-      max-width: 600px;
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-
-    .diploma-card {
-      padding: 1rem; /* slightly bigger than normal badges */
-    }
-  </style>
 </head>
 
 <body>
@@ -46,90 +32,106 @@
       <p>These credentials highlight my commitment to strong technical skills and professional standards.</p>
     </section>
 
-    <!-- Diploma (largest, centered, on top) -->
-    <section class="centered-section" style="margin-bottom: 2rem;">
-      <a
-        href="resume-images/diploma.png"
-        target="_blank"
-        rel="noopener"
-        class="badge-card diploma-card"
-        aria-label="Open diploma image in a new tab"
-      >
-        <img
-          src="resume-images/diploma.png"
-          alt="Sundance College Diploma with Honours - Mobile and Web Developer"
-          class="badge-image diploma-image"
-        />
-      </a>
-    </section>
+    <!-- Two-column layout: Diploma left, certificates right -->
+    <section class="certifications-grid" aria-label="Diploma and certifications">
+      <!-- Left column -->
+      <div class="cert-panel">
+        <h3>Diploma</h3>
+        <p class="helper">Mobile &amp; Web Developer (Honours), Sundance College.</p>
 
-    <!-- Existing certifications -->
-    <section class="badge-row centered-section">
-      <a
-        href="https://certificates.simnetonline.com/a00e0c1f-77a8-4229-badf-da058744e1fd#acc.U041tCrj"
-        target="_blank"
-        rel="noopener"
-        class="badge-card"
-      >
-        <img
-          src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/120977483"
-          alt="Microsoft Office SIMnet credential badge"
-          class="badge-image"
-        />
-      </a>
+        <a
+          href="resume-images/diploma.png"
+          target="_blank"
+          rel="noopener"
+          class="diploma-card"
+          aria-label="Open diploma image in a new tab"
+        >
+          <img
+            src="resume-images/diploma.png"
+            alt="Sundance College Diploma with Honours - Mobile and Web Developer"
+            class="diploma-image"
+            loading="lazy"
+          />
+        </a>
+      </div>
 
-      <a
-        href="https://certificates.simnetonline.com/79b633a7-f5d8-470b-9f1c-1b7b3117ae09#acc.6RDlLmgP"
-        target="_blank"
-        rel="noopener"
-        class="badge-card"
-      >
-        <img
-          src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/124055789"
-          alt="Microsoft Office SIMnet advanced credential badge"
-          class="badge-image"
-        />
-      </a>
+      <!-- Right column -->
+      <div class="cert-panel">
+        <h3>Certificates</h3>
+        <p class="helper">Click a badge to view the credential.</p>
 
-      <a
-        href="https://www.credential.net/6986b5a2-c214-49e5-b4bb-a270a176175e#acc.p4FmQY7Z"
-        target="_blank"
-        rel="noopener"
-        class="badge-card"
-      >
-        <img
-          src="https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/112657732"
-          alt="CIPS Alberta Membership certificate for Christopher Pink"
-          class="badge-image"
-        />
-      </a>
+        <div class="badge-grid">
+          <a
+            href="https://certificates.simnetonline.com/a00e0c1f-77a8-4229-badf-da058744e1fd#acc.U041tCrj"
+            target="_blank"
+            rel="noopener"
+            class="badge-card"
+          >
+            <img
+              src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/120977483"
+              alt="Microsoft Office SIMnet credential badge"
+              class="badge-image"
+              loading="lazy"
+            />
+          </a>
 
-      <!-- TestDome (use your own image badge) -->
-      <a
-        href="https://www.testdome.com/certificates/35a84a7d8f494a66bcc3f9ea07447c71"
-        target="_blank"
-        rel="noopener"
-        class="badge-card"
-      >
-        <img
-          src="resume-images/testdome.png"
-          alt="TestDome SQL certificate badge"
-          class="badge-image"
-        />
-      </a>
+          <a
+            href="https://certificates.simnetonline.com/79b633a7-f5d8-470b-9f1c-1b7b3117ae09#acc.6RDlLmgP"
+            target="_blank"
+            rel="noopener"
+            class="badge-card"
+          >
+            <img
+              src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/124055789"
+              alt="Microsoft Office SIMnet advanced credential badge"
+              class="badge-image"
+              loading="lazy"
+            />
+          </a>
 
-      <a
-        href="https://www.sololearn.com/certificates/CC-CVRU0YLM"
-        target="_blank"
-        rel="noopener"
-        class="badge-card"
-      >
-        <img
-          src="resume-images/sololearn.png"
-          alt="SoloLearn Introduction to SQL Certificate badge awarded to Christopher Pink."
-          class="badge-image"
-        />
-      </a>
+          <a
+            href="https://www.credential.net/6986b5a2-c214-49e5-b4bb-a270a176175e#acc.p4FmQY7Z"
+            target="_blank"
+            rel="noopener"
+            class="badge-card"
+          >
+            <img
+              src="https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/112657732"
+              alt="CIPS Alberta Membership certificate for Christopher Pink"
+              class="badge-image"
+              loading="lazy"
+            />
+          </a>
+
+          <a
+            href="https://www.testdome.com/certificates/35a84a7d8f494a66bcc3f9ea07447c71"
+            target="_blank"
+            rel="noopener"
+            class="badge-card"
+          >
+            <img
+              src="resume-images/testdome.png"
+              alt="TestDome SQL certificate badge"
+              class="badge-image"
+              loading="lazy"
+            />
+          </a>
+
+          <a
+            href="https://www.sololearn.com/certificates/CC-CVRU0YLM"
+            target="_blank"
+            rel="noopener"
+            class="badge-card"
+          >
+            <img
+              src="resume-images/sololearn.png"
+              alt="SoloLearn Introduction to SQL Certificate badge awarded to Christopher Pink."
+              class="badge-image"
+              loading="lazy"
+            />
+          </a>
+        </div>
+      </div>
     </section>
   </main>
 

@@ -526,12 +526,6 @@ body {
   transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
 }
 
-.badge-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(56, 189, 248, 0.6);
-  box-shadow: 0 22px 40px rgba(15, 23, 42, 0.85);
-}
-
 .badge-image {
   max-width: 160px;
   height: auto;
@@ -719,10 +713,145 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
+/* Unify hover behavior in ONE place (later in the file wins by source order) */
 .badge-card:hover,
 .testdome-badge:hover {
-  transform: translateY(-3px) scale(1.02);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
-  border-color: #1a73e8;
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 22px 40px rgba(15, 23, 42, 0.85);
+}
 
+/* ----------------------------- */
+/* Resume Certifications (NEW)   */
+/* ----------------------------- */
+
+.certifications-grid {
+  display: grid;
+  grid-template-columns: minmax(320px, 1fr) minmax(380px, 1.3fr);
+  gap: 1.75rem;
+  align-items: start;
+  margin-top: 1.25rem;
+}
+
+/* Defensive: prevent grid "blowout" from long content */
+.certifications-grid > * {
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .certifications-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cert-panel {
+  background: radial-gradient(circle at top left, #111827, var(--card-bg));
+  border: 1px solid var(--border-soft);
+  border-radius: 16px;
+  box-shadow: var(--shadow-soft);
+  padding: 1.25rem;
+}
+
+.cert-panel h3 {
+  margin-bottom: 0.35rem;
+  font-size: 1.1rem;
+}
+
+.cert-panel .helper {
+  color: var(--muted);
+  margin-bottom: 1rem;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+.diploma-card {
+  width: 100%;
+  display: block;
+  padding: 0.85rem;
+  border-radius: 14px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-soft);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast), border-color var(--transition-fast);
+}
+
+.diploma-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(56, 189, 248, 0.6);
+  box-shadow: 0 22px 40px rgba(15, 23, 42, 0.85);
+}
+
+.diploma-image {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 10px;
+}
+
+/* 2 badges per row on desktop */
+.badge-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 1fr));
+  gap: 1.25rem;
+  align-items: stretch;
+}
+
+/* Make badge cards behave like consistent tiles inside the grid */
+.badge-grid .badge-card {
+  display: flex;                 /* override inline-flex for grid tiles */
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  padding: 0.9rem;
+  min-height: 150px;             /* consistent tile height */
+}
+
+/* Make images fit nicely regardless of aspect ratio */
+.badge-grid .badge-image {
+  width: 100%;
+  max-width: 190px;
+  max-height: 125px;
+  height: auto;
+  object-fit: contain;
+}
+
+/* Center the bottom badge when there's an odd number of items */
+.badge-grid .badge-card:last-child {
+  grid-column: 1 / -1;           /* span both columns */
+  justify-self: center;          /* center the tile within the spanned area */
+  max-width: 420px;              /* prevents it from becoming too wide */
+}
+
+/* 1 across on small screens */
+@media (max-width: 520px) {
+  .badge-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .badge-grid .badge-card:last-child {
+    grid-column: auto;           /* back to normal in 1-column layout */
+    max-width: none;
+  }
+
+  .badge-grid .badge-image {
+    max-width: 210px;
+    max-height: 140px;
+  }
+}
+
+/* Motion accessibility: reduce non-essential motion when user requests it */
+@media (prefers-reduced-motion: reduce) {
+  .badge-card,
+  .testdome-badge,
+  .diploma-card {
+    transition: none;
+  }
+
+  .badge-card:hover,
+  .testdome-badge:hover,
+  .diploma-card:hover {
+    transform: none;
+  }
 }
