@@ -1,49 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Resume | Christopher Pink</title>
-  <link rel="stylesheet" href="styles.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <!-- TestDome certificate embed stylesheet -->
-  <script>
-    var stylesheet = "https://www.testdome.com/content/certificates/embed.css";
-    link = document.createElement("link");
-    link.href = stylesheet;
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.media = "screen,print";
-    document.getElementsByTagName("head")[0].appendChild(link);
-  </script>
+  <!-- Page-only: make diploma larger and centered above other certifications -->
+  <style>
+    .diploma-image {
+      max-width: 600px;
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .diploma-card {
+      padding: 1rem; /* slightly bigger than normal badges */
+    }
+  </style>
 </head>
 
 <body>
   <header class="site-header" id="site-header"></header>
-  <br>
+  <br />
+
   <main class="main-content">
     <section class="page-header page-header-center">
       <h1>Resume</h1>
-      <p>For a complete overview of my experience, education, and technical skills, please download my resume as a PDF.</p>
+      <p>
+        For a complete overview of my experience, education, and technical skills, please download my resume as a PDF.
+      </p>
     </section>
-    <br>
+
+    <br />
+
     <section class="contact-section resume-download">
-      <a
-        href="CKP - Resume.pdf"
-        class="btn-primary"
-        target="_blank"
-        rel="noopener"
-      >
-        Download Resume (PDF)
-      </a>
+      <a href="CKP - Resume.pdf" class="btn-primary" target="_blank" rel="noopener">Download Resume PDF</a>
     </section>
-    <br>
-    <section class="page-header page-header-center" style="margin-top: 2.5rem;">
+
+    <br />
+
+    <section class="page-header page-header-center" style="margin-top: 2.5rem">
       <h2>Certifications</h2>
       <p>These credentials highlight my commitment to strong technical skills and professional standards.</p>
     </section>
 
+    <!-- Diploma (largest, centered, on top) -->
+    <section class="centered-section" style="margin-bottom: 2rem;">
+      <a
+        href="resume-images/diploma.png"
+        target="_blank"
+        rel="noopener"
+        class="badge-card diploma-card"
+        aria-label="Open diploma image in a new tab"
+      >
+        <img
+          src="resume-images/diploma.png"
+          alt="Sundance College Diploma with Honours - Mobile and Web Developer"
+          class="badge-image diploma-image"
+        />
+      </a>
+    </section>
+
+    <!-- Existing certifications -->
     <section class="badge-row centered-section">
       <a
         href="https://certificates.simnetonline.com/a00e0c1f-77a8-4229-badf-da058744e1fd#acc.U041tCrj"
@@ -55,7 +75,7 @@
           src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/120977483"
           alt="Microsoft Office SIMnet credential badge"
           class="badge-image"
-        >
+        />
       </a>
 
       <a
@@ -68,7 +88,7 @@
           src="https://api.accredible.com/v1/frontend/credential_website_embed_image/badge/124055789"
           alt="Microsoft Office SIMnet advanced credential badge"
           class="badge-image"
-        >
+        />
       </a>
 
       <a
@@ -81,39 +101,41 @@
           src="https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/112657732"
           alt="CIPS Alberta Membership certificate for Christopher Pink"
           class="badge-image"
-        >
+        />
       </a>
 
-      <!-- TestDome SQL Certificate (embedded, styled like other badges) -->
+      <!-- TestDome (use your own image badge) -->
       <a
         href="https://www.testdome.com/certificates/35a84a7d8f494a66bcc3f9ea07447c71"
-        class="testdome-certificate-stamp silver badge-card testdome-badge"
         target="_blank"
         rel="noopener"
+        class="badge-card"
       >
-        <span class="testdome-certificate-name">Christopher Pink</span>
-        <span class="testdome-certificate-test-name">SQL</span>
-        <span class="testdome-certificate-card-logo">TestDome<br>Certificate</span>
+        <img
+          src="resume-images/testdome.png"
+          alt="TestDome SQL certificate badge"
+          class="badge-image"
+        />
       </a>
 
-      <a href="https://www.sololearn.com/certificates/CC-CVRU0YLM" 
-         target="_blank" 
-         rel="noopener" 
-         class="badge-card">
-      
-         <img 
-           src="resume-images/sololearn.png" 
-           alt="SoloLearn Introduction to SQL Certificate badge awarded to Christopher Pink." 
-           class="badge-image">
+      <a
+        href="https://www.sololearn.com/certificates/CC-CVRU0YLM"
+        target="_blank"
+        rel="noopener"
+        class="badge-card"
+      >
+        <img
+          src="resume-images/sololearn.png"
+          alt="SoloLearn Introduction to SQL Certificate badge awarded to Christopher Pink."
+          class="badge-image"
+        />
       </a>
-
-</section>
+    </section>
   </main>
 
   <footer class="site-footer" id="site-footer"></footer>
 
   <script src="footer.js"></script>
   <script src="header.js"></script>
-
 </body>
 </html>
