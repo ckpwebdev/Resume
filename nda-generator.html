@@ -132,8 +132,8 @@
       border: 1px solid var(--border-soft);
       border-radius: 12px;
       padding: 1rem;
-      max-height: none;   /* changed: no scroll box */
-      overflow: visible;  /* changed: natural page flow */
+      max-height: none;   /* no scroll box */
+      overflow: visible;  /* natural page flow */
     }
 
     .tiny {
@@ -361,6 +361,7 @@
       return text ? text : "[Enter value]";
     }
 
+    // Clause Library + structured assembly
     function renderNDA(s) {
       const effective = s.effectiveDate ? s.effectiveDate : "[Effective date]";
       const term = s.termYears ? s.termYears : "[Term years]";
@@ -374,84 +375,124 @@
 
       const purpose = s.purpose ? s.purpose : "[Describe the purpose of disclosure]";
 
-      const mutualText = (s.agreementType === "mutual")
-        ? "This is a mutual NDA. Each party may disclose Confidential Information to the other, and each party agrees to protect the other party’s Confidential Information."
-        : "This is a one-way NDA. Only the Disclosing Party is expected to disclose Confidential Information, and the Receiving Party agrees to protect it.";
+      const agreementTypeText =
+        (s.agreementType === "mutual")
+          ? "This is a mutual NDA. Each party may disclose Confidential Information to the other, and each party agrees to protect the other party’s Confidential Information."
+          : "This is a one-way NDA. Only the Disclosing Party is expected to disclose Confidential Information, and the Receiving Party agrees to protect it.";
 
-      const sections = [];
+      const CLAUSES = [
+        { id: "title", when: () => true, text: () => `NON-DISCLOSURE AGREEMENT (NDA)` },
 
-      sections.push(
-`NON-DISCLOSURE AGREEMENT (NDA)
+        { id: "effective", when: () => true, text: () => `Effective Date: ${effective}` },
 
-Effective Date: ${effective}
-
-1. PARTIES
+        {
+          id: "parties",
+          when: () => true,
+          text: () =>
+`1. PARTIES
 Disclosing Party: ${disclosing}
 ${disclosingAddr}Receiving Party: ${receiving}
-${receivingAddr}
-2. PURPOSE
+${receivingAddr}`},
+
+        {
+          id: "purpose",
+          when: () => true,
+          text: () =>
+`2. PURPOSE
 The parties wish to share certain information for the following purpose:
-${purpose}
+${purpose}`},
 
-3. TYPE OF NDA
-${mutualText}
+        {
+          id: "type",
+          when: () => true,
+          text: () =>
+`3. TYPE OF NDA
+${agreementTypeText}`},
 
-4. CONFIDENTIAL INFORMATION
-“Confidential Information” means non-public information disclosed in any form (written, oral, electronic, or other) that a reasonable person would understand to be confidential given the nature of the information and the circumstances of disclosure.
+        {
+          id: "definition",
+          when: () => true,
+          text: () =>
+`4. CONFIDENTIAL INFORMATION
+“Confidential Information” means non-public information disclosed in any form (written, oral, electronic, or other) that a reasonable person would understand to be confidential given the nature of the information and the circumstances of disclosure.`},
 
-5. OBLIGATIONS
+        {
+          id: "obligations",
+          when: () => true,
+          text: () =>
+`5. OBLIGATIONS
 The Receiving Party agrees to:
 (a) use Confidential Information only for the Purpose;
 (b) protect Confidential Information using reasonable care; and
-(c) not disclose Confidential Information except as permitted by this Agreement.`);
+(c) not disclose Confidential Information except as permitted by this Agreement.`},
 
-      if (s.incExclusions) {
-        sections.push(
+        {
+          id: "exclusions",
+          when: (st) => st.incExclusions,
+          text: () =>
 `6. EXCLUSIONS
 Confidential Information does not include information that:
 (a) is or becomes public through no fault of the Receiving Party;
 (b) was already known to the Receiving Party without restriction before disclosure;
 (c) is independently developed by the Receiving Party without using Confidential Information; or
-(d) is rightfully obtained from a third party without breach of a duty of confidentiality.`);
-      }
+(d) is rightfully obtained from a third party without breach of a duty of confidentiality.`},
 
-      if (s.incCompelled) {
-        sections.push(
+        {
+          id: "compelled",
+          when: (st) => st.incCompelled,
+          text: () =>
 `7. COMPELLED DISCLOSURE
-If the Receiving Party is legally required to disclose Confidential Information (e.g., by subpoena or court order), the Receiving Party will (to the extent legally permitted) provide prompt notice to the Disclosing Party so the Disclosing Party may seek protective relief. The Receiving Party will disclose only the portion required.`);
-      }
+If the Receiving Party is legally required to disclose Confidential Information (e.g., by subpoena or court order), the Receiving Party will (to the extent legally permitted) provide prompt notice to the Disclosing Party so the Disclosing Party may seek protective relief. The Receiving Party will disclose only the portion required.`},
 
-      if (s.incReturnDestroy) {
-        sections.push(
+        {
+          id: "return-destroy",
+          when: (st) => st.incReturnDestroy,
+          text: () =>
 `8. RETURN OR DESTRUCTION
-Upon written request by the Disclosing Party, the Receiving Party will promptly return or destroy Confidential Information (including copies, summaries, and notes), subject to any legally required retention.`);
-      }
+Upon written request by the Disclosing Party, the Receiving Party will promptly return or destroy Confidential Information (including copies, summaries, and notes), subject to any legally required retention.`},
 
-      if (s.incNoLicense) {
-        sections.push(
+        {
+          id: "no-license",
+          when: (st) => st.incNoLicense,
+          text: () =>
 `9. NO LICENSE / NO TRANSFER
-No license or other rights are granted under this Agreement by disclosure of Confidential Information. All Confidential Information remains the property of the Disclosing Party.`);
-      }
+No license or other rights are granted under this Agreement by disclosure of Confidential Information. All Confidential Information remains the property of the Disclosing Party.`},
 
-      sections.push(
+        {
+          id: "term",
+          when: () => true,
+          text: () =>
 `10. TERM
-This Agreement begins on the Effective Date and continues for ${term} year(s). Confidentiality obligations survive termination as required to protect Confidential Information disclosed during the term.`);
+This Agreement begins on the Effective Date and continues for ${term} year(s). Confidentiality obligations survive termination as required to protect Confidential Information disclosed during the term.`},
 
-      if (s.incRemedies) {
-        sections.push(
+        {
+          id: "remedies",
+          when: (st) => st.incRemedies,
+          text: () =>
 `11. REMEDIES
-The parties acknowledge that unauthorized disclosure may cause irreparable harm. The Disclosing Party may seek injunctive relief and any other remedies available at law or in equity.`);
-      }
+The parties acknowledge that unauthorized disclosure may cause irreparable harm. The Disclosing Party may seek injunctive relief and any other remedies available at law or in equity.`},
 
-      sections.push(
+        {
+          id: "law",
+          when: () => true,
+          text: () =>
 `12. GOVERNING LAW
-This Agreement is governed by the laws of: ${law}
+This Agreement is governed by the laws of: ${law}`},
 
-13. SIGNATURES
+        {
+          id: "signatures",
+          when: () => true,
+          text: () =>
+`13. SIGNATURES
 Disclosing Party: ___________________________   Date: _______________
-Receiving Party: ___________________________   Date: _______________`);
+Receiving Party: ___________________________   Date: _______________`}
+      ];
 
-      return sections.join("\n\n");
+      // Assemble document from clause library
+      return CLAUSES
+        .filter(c => c.when(s))
+        .map(c => c.text(s))
+        .join("\n\n");
     }
 
     function update() {
