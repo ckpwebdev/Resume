@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>NDA Generator | Christopher Pink</title>
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <style>
+    /* Page-only tweaks (uses your theme variables) */
+    .nda-grid {
+      display: grid;
+      grid-template-columns: 1fr; /* single column: form above preview */
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    .nda-card {
+      background: radial-gradient(circle at top left, #111827, var(--card-bg));
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-soft);
+    }
+
+    .nda-card h3 { margin-bottom: 0.75rem; font-size: 1.1rem; }
+
+    .nda-note {
+      color: var(--muted);
+      font-size: 0.95rem;
+      line-height: 1.45;
+      margin-top: 0.5rem;
+    }
+
+    .nda-warning {
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.08);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      margin: 0 0 1.25rem 0;
+      color: var(--text);
+    }
+
+    .nda-warning strong { color: var(--accent); }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem 1rem;
+      margin-top: 0.75rem;
+    }
+
+    @media (max-width: 520px) {
+      .field-grid { grid-template-columns: 1fr; }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .field label {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      padding: 0.6rem 0.7rem;
+      color: var(--text);
+      font: inherit;
+    }
+
+    .field textarea { min-height: 90px; resize: vertical; }
+
+    .checks {
+      display: grid;
+      gap: 0.45rem;
+      margin-top: 0.5rem;
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+
+    .check input { margin-top: 0.2rem; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 0.7rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: rgba(15, 23, 42, 0.65);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform var(--transition-fast), border-color var(--transition-fast), filter var(--transition-fast);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      border-color: rgba(56, 189, 248, 0.6);
+      filter: brightness(1.05);
+    }
+
+    .preview {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text);
+      font-size: 0.95rem;
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid var(--border-soft);
+      border-radius: 12px;
+      padding: 1rem;
+      max-height: none;   /* changed: no scroll box */
+      overflow: visible;  /* changed: natural page flow */
+    }
+
+    .tiny {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+    }
+
+    @media print {
+      body { background: #fff !important; color: #111 !important; }
+      .site-header, .site-footer, .actions, .nda-warning { display: none !important; }
+      .main-content { max-width: none; padding: 0; }
+      .nda-grid { grid-template-columns: 1fr; }
+      .nda-card { box-shadow: none; border: none; padding: 0; background: transparent; }
+      .preview { border: none; background: transparent; padding: 0; color: #111; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header" id="site-header"></header>
+  <br />
+
+  <main class="main-content">
+    <section class="page-header page-header-center">
+      <h1>NDA Generator</h1>
+      <p>Create a draft NDA with conditional sections and a live preview.</p>
+    </section>
+
+    <div class="nda-warning">
+      <strong>Demo only:</strong> This generator is for portfolio/demo purposes and is not legal advice.
+      Use a lawyer for real agreements.
+    </div>
+
+    <section class="nda-grid">
+      <!-- TOP: FORM -->
+      <div class="nda-card">
+        <h3>Questionnaire</h3>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="agreementType">Agreement type</label>
+            <select id="agreementType">
+              <option value="mutual">Mutual (both parties disclose)</option>
+              <option value="oneway">One-way (only one discloses)</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="effectiveDate">Effective date</label>
+            <input id="effectiveDate" type="date" />
+          </div>
+
+          <div class="field">
+            <label for="disclosingName">Disclosing party name</label>
+            <input id="disclosingName" type="text" placeholder="e.g., Pink Apps Inc." />
+          </div>
+
+          <div class="field">
+            <label for="disclosingAddress">Disclosing party address</label>
+            <input id="disclosingAddress" type="text" placeholder="Street, City, Province/State" />
+          </div>
+
+          <div class="field">
+            <label for="receivingName">Receiving party name</label>
+            <input id="receivingName" type="text" placeholder="e.g., LawDepot (Demo)" />
+          </div>
+
+          <div class="field">
+            <label for="receivingAddress">Receiving party address</label>
+            <input id="receivingAddress" type="text" placeholder="Street, City, Province/State" />
+          </div>
+
+          <div class="field" style="grid-column: 1 / -1;">
+            <label for="purpose">Purpose (why info is shared)</label>
+            <textarea id="purpose" placeholder="e.g., Evaluating a potential business relationship..."></textarea>
+          </div>
+
+          <div class="field">
+            <label for="termYears">Confidentiality term (years)</label>
+            <select id="termYears">
+              <option value="1">1</option>
+              <option value="2" selected>2</option>
+              <option value="3">3</option>
+              <option value="5">5</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="governingLaw">Governing law / jurisdiction</label>
+            <input id="governingLaw" type="text" placeholder="e.g., Alberta, Canada" />
+          </div>
+        </div>
+
+        <p class="nda-note">Common NDA sections you can toggle:</p>
+        <div class="checks">
+          <label class="check"><input id="incExclusions" type="checkbox" checked /> Exclusions (public domain, already known, independent development, third-party, etc.)</label>
+          <label class="check"><input id="incReturnDestroy" type="checkbox" checked /> Return or destruction of confidential info</label>
+          <label class="check"><input id="incCompelled" type="checkbox" checked /> Compelled disclosure (subpoena/court order)</label>
+          <label class="check"><input id="incNoLicense" type="checkbox" checked /> No license / no transfer of IP rights</label>
+          <label class="check"><input id="incRemedies" type="checkbox" checked /> Remedies (injunctive relief / damages)</label>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" id="btnCopy" type="button">Copy text</button>
+          <button class="btn-secondary" id="btnDownload" type="button">Download .txt</button>
+          <button class="btn-secondary" id="btnPrint" type="button">Print</button>
+          <button class="btn-secondary" id="btnSample" type="button">Fill sample</button>
+          <button class="btn-secondary" id="btnReset" type="button">Reset</button>
+        </div>
+
+        <div class="tiny" id="status" aria-live="polite"></div>
+      </div>
+
+      <!-- BOTTOM: PREVIEW -->
+      <div class="nda-card">
+        <h3>Live preview</h3>
+        <div class="preview" id="preview" role="document"></div>
+        <div class="tiny">Auto-saves in your browser (localStorage).</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="footer.js"></script>
+  <script src="header.js"></script>
+
+  <script>
+    // ---- NDA Generator (demo) ----
+    const els = {
+      agreementType: document.getElementById("agreementType"),
+      effectiveDate: document.getElementById("effectiveDate"),
+      disclosingName: document.getElementById("disclosingName"),
+      disclosingAddress: document.getElementById("disclosingAddress"),
+      receivingName: document.getElementById("receivingName"),
+      receivingAddress: document.getElementById("receivingAddress"),
+      purpose: document.getElementById("purpose"),
+      termYears: document.getElementById("termYears"),
+      governingLaw: document.getElementById("governingLaw"),
+
+      incExclusions: document.getElementById("incExclusions"),
+      incReturnDestroy: document.getElementById("incReturnDestroy"),
+      incCompelled: document.getElementById("incCompelled"),
+      incNoLicense: document.getElementById("incNoLicense"),
+      incRemedies: document.getElementById("incRemedies"),
+
+      preview: document.getElementById("preview"),
+      status: document.getElementById("status"),
+
+      btnCopy: document.getElementById("btnCopy"),
+      btnDownload: document.getElementById("btnDownload"),
+      btnPrint: document.getElementById("btnPrint"),
+      btnSample: document.getElementById("btnSample"),
+      btnReset: document.getElementById("btnReset"),
+    };
+
+    const STORAGE_KEY = "ndaDraft_v1";
+
+    function nowISODate() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function getState() {
+      return {
+        agreementType: els.agreementType.value,
+        effectiveDate: els.effectiveDate.value || "",
+        disclosingName: els.disclosingName.value.trim(),
+        disclosingAddress: els.disclosingAddress.value.trim(),
+        receivingName: els.receivingName.value.trim(),
+        receivingAddress: els.receivingAddress.value.trim(),
+        purpose: els.purpose.value.trim(),
+        termYears: els.termYears.value,
+        governingLaw: els.governingLaw.value.trim(),
+
+        incExclusions: els.incExclusions.checked,
+        incReturnDestroy: els.incReturnDestroy.checked,
+        incCompelled: els.incCompelled.checked,
+        incNoLicense: els.incNoLicense.checked,
+        incRemedies: els.incRemedies.checked,
+      };
+    }
+
+    function setState(s) {
+      els.agreementType.value = s.agreementType ?? "mutual";
+      els.effectiveDate.value = s.effectiveDate ?? "";
+      els.disclosingName.value = s.disclosingName ?? "";
+      els.disclosingAddress.value = s.disclosingAddress ?? "";
+      els.receivingName.value = s.receivingName ?? "";
+      els.receivingAddress.value = s.receivingAddress ?? "";
+      els.purpose.value = s.purpose ?? "";
+      els.termYears.value = String(s.termYears ?? "2");
+      els.governingLaw.value = s.governingLaw ?? "";
+
+      els.incExclusions.checked = !!s.incExclusions;
+      els.incReturnDestroy.checked = !!s.incReturnDestroy;
+      els.incCompelled.checked = !!s.incCompelled;
+      els.incNoLicense.checked = !!s.incNoLicense;
+      els.incRemedies.checked = !!s.incRemedies;
+    }
+
+    function saveDraft() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(getState()));
+      } catch (_) {}
+    }
+
+    function loadDraft() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        const s = JSON.parse(raw);
+        setState(s);
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function lineIf(text) {
+      return text ? text : "[Enter value]";
+    }
+
+    function renderNDA(s) {
+      const effective = s.effectiveDate ? s.effectiveDate : "[Effective date]";
+      const term = s.termYears ? s.termYears : "[Term years]";
+      const law = s.governingLaw ? s.governingLaw : "[Governing law]";
+
+      const disclosing = lineIf(s.disclosingName);
+      const receiving = lineIf(s.receivingName);
+
+      const disclosingAddr = s.disclosingAddress ? `Address: ${s.disclosingAddress}\n` : "";
+      const receivingAddr = s.receivingAddress ? `Address: ${s.receivingAddress}\n` : "";
+
+      const purpose = s.purpose ? s.purpose : "[Describe the purpose of disclosure]";
+
+      const mutualText = (s.agreementType === "mutual")
+        ? "This is a mutual NDA. Each party may disclose Confidential Information to the other, and each party agrees to protect the other party’s Confidential Information."
+        : "This is a one-way NDA. Only the Disclosing Party is expected to disclose Confidential Information, and the Receiving Party agrees to protect it.";
+
+      const sections = [];
+
+      sections.push(
+`NON-DISCLOSURE AGREEMENT (NDA)
+
+Effective Date: ${effective}
+
+1. PARTIES
+Disclosing Party: ${disclosing}
+${disclosingAddr}Receiving Party: ${receiving}
+${receivingAddr}
+2. PURPOSE
+The parties wish to share certain information for the following purpose:
+${purpose}
+
+3. TYPE OF NDA
+${mutualText}
+
+4. CONFIDENTIAL INFORMATION
+“Confidential Information” means non-public information disclosed in any form (written, oral, electronic, or other) that a reasonable person would understand to be confidential given the nature of the information and the circumstances of disclosure.
+
+5. OBLIGATIONS
+The Receiving Party agrees to:
+(a) use Confidential Information only for the Purpose;
+(b) protect Confidential Information using reasonable care; and
+(c) not disclose Confidential Information except as permitted by this Agreement.`);
+
+      if (s.incExclusions) {
+        sections.push(
+`6. EXCLUSIONS
+Confidential Information does not include information that:
+(a) is or becomes public through no fault of the Receiving Party;
+(b) was already known to the Receiving Party without restriction before disclosure;
+(c) is independently developed by the Receiving Party without using Confidential Information; or
+(d) is rightfully obtained from a third party without breach of a duty of confidentiality.`);
+      }
+
+      if (s.incCompelled) {
+        sections.push(
+`7. COMPELLED DISCLOSURE
+If the Receiving Party is legally required to disclose Confidential Information (e.g., by subpoena or court order), the Receiving Party will (to the extent legally permitted) provide prompt notice to the Disclosing Party so the Disclosing Party may seek protective relief. The Receiving Party will disclose only the portion required.`);
+      }
+
+      if (s.incReturnDestroy) {
+        sections.push(
+`8. RETURN OR DESTRUCTION
+Upon written request by the Disclosing Party, the Receiving Party will promptly return or destroy Confidential Information (including copies, summaries, and notes), subject to any legally required retention.`);
+      }
+
+      if (s.incNoLicense) {
+        sections.push(
+`9. NO LICENSE / NO TRANSFER
+No license or other rights are granted under this Agreement by disclosure of Confidential Information. All Confidential Information remains the property of the Disclosing Party.`);
+      }
+
+      sections.push(
+`10. TERM
+This Agreement begins on the Effective Date and continues for ${term} year(s). Confidentiality obligations survive termination as required to protect Confidential Information disclosed during the term.`);
+
+      if (s.incRemedies) {
+        sections.push(
+`11. REMEDIES
+The parties acknowledge that unauthorized disclosure may cause irreparable harm. The Disclosing Party may seek injunctive relief and any other remedies available at law or in equity.`);
+      }
+
+      sections.push(
+`12. GOVERNING LAW
+This Agreement is governed by the laws of: ${law}
+
+13. SIGNATURES
+Disclosing Party: ___________________________   Date: _______________
+Receiving Party: ___________________________   Date: _______________`);
+
+      return sections.join("\n\n");
+    }
+
+    function update() {
+      const s = getState();
+      els.preview.textContent = renderNDA(s);
+      saveDraft();
+    }
+
+    function setStatus(msg) {
+      els.status.textContent = msg;
+      if (!msg) return;
+      window.clearTimeout(setStatus._t);
+      setStatus._t = window.setTimeout(() => (els.status.textContent = ""), 2500);
+    }
+
+    // Events
+    const inputs = [
+      els.agreementType, els.effectiveDate, els.disclosingName, els.disclosingAddress,
+      els.receivingName, els.receivingAddress, els.purpose, els.termYears, els.governingLaw,
+      els.incExclusions, els.incReturnDestroy, els.incCompelled, els.incNoLicense, els.incRemedies
+    ];
+    inputs.forEach(el => el.addEventListener("input", update));
+    inputs.forEach(el => el.addEventListener("change", update));
+
+    els.btnCopy.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(els.preview.textContent);
+        setStatus("Copied to clipboard.");
+      } catch (e) {
+        setStatus("Copy failed (browser permissions).");
+      }
+    });
+
+    els.btnDownload.addEventListener("click", () => {
+      const blob = new Blob([els.preview.textContent], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "nda-draft.txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus("Downloaded nda-draft.txt");
+    });
+
+    els.btnPrint.addEventListener("click", () => window.print());
+
+    els.btnSample.addEventListener("click", () => {
+      setState({
+        agreementType: "mutual",
+        effectiveDate: nowISODate(),
+        disclosingName: "Pink Apps Inc.",
+        disclosingAddress: "Edmonton, Alberta, Canada",
+        receivingName: "Acme Partners Ltd.",
+        receivingAddress: "Calgary, Alberta, Canada",
+        purpose: "Evaluating a potential business relationship and sharing technical and business information for discussion purposes.",
+        termYears: "2",
+        governingLaw: "Alberta, Canada",
+        incExclusions: true,
+        incReturnDestroy: true,
+        incCompelled: true,
+        incNoLicense: true,
+        incRemedies: true
+      });
+      update();
+      setStatus("Sample filled.");
+    });
+
+    els.btnReset.addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      setState({
+        agreementType: "mutual",
+        effectiveDate: "",
+        disclosingName: "",
+        disclosingAddress: "",
+        receivingName: "",
+        receivingAddress: "",
+        purpose: "",
+        termYears: "2",
+        governingLaw: "",
+        incExclusions: true,
+        incReturnDestroy: true,
+        incCompelled: true,
+        incNoLicense: true,
+        incRemedies: true
+      });
+      update();
+      setStatus("Reset.");
+    });
+
+    // Init
+    loadDraft();
+    update();
+  </script>
+</body>
+</html>

@@ -7,41 +7,54 @@
 
   <link rel="stylesheet" href="styles.css" />
 
-  <!-- Page-only layout fixes for a single-card grid -->
+  <!-- Page-only layout tweaks -->
   <style>
-    /* With only one card, highlight-grid would otherwise stretch full-width [file:62] */
-    .highlight-grid.one-card {
-      grid-template-columns: minmax(0, 560px);
+    /* Keep the portfolio cards nicely sized and centered */
+    .highlight-grid.portfolio-grid {
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       justify-content: center;
-
-      /* Extra space between header area and the card */
       margin-top: 1.5rem;
     }
 
-    .highlight-grid.one-card .card {
+    /* Prevent cards from getting too wide on large screens */
+    .highlight-grid.portfolio-grid .card {
       width: 100%;
+      max-width: 560px;
+      justify-self: center;
     }
   </style>
 </head>
 
 <body>
   <header class="site-header" id="site-header"></header>
-<br>
+  <br>
+
   <main class="main-content">
     <section class="page-header page-header-center">
       <h1>Portfolio</h1>
       <p>Project demos relevant to content implementation and interactive templates.</p>
     </section>
 
-    <section class="highlight-grid one-card">
+    <section class="highlight-grid portfolio-grid">
       <article class="card">
         <h2>Interactive Lease Generator (Demo)</h2>
         <p>
           A questionnaire-style form that generates a preview and downloadable PDF output.
         </p>
-
+<br>
         <div class="centered-section">
           <a class="btn-primary" href="lease-demo.html">Open demo</a>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>NDA Generator (Demo)</h2>
+        <p>
+          A questionnaire-style form that generates a live NDA draft with conditional sections and export options.
+        </p>
+<br>
+        <div class="centered-section">
+          <a class="btn-primary" href="nda-generator.html">Open demo</a>
         </div>
       </article>
     </section>
