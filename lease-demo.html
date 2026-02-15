@@ -13,6 +13,26 @@
 
   <!-- Small page-only tweaks that reuse your CSS variables -->
   <style>
+    /* Single-column layout: form above preview */
+    .lease-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      align-items: start;
+      margin-top: 1.5rem;
+    }
+
+    /* Demo warning banner (matches nda-generator.html) */
+    .demo-warning {
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.08);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      margin: 0 0 1.25rem 0;
+      color: var(--text);
+    }
+    .demo-warning strong { color: var(--accent); }
+
     /* Your global form styling covers inputs/textarea; this brings selects in line */
     .contact-form select {
       background: rgba(15, 23, 42, 0.9);
@@ -67,6 +87,13 @@
       transform: translateY(-1px);
       filter: brightness(1.05);
     }
+
+    @media print {
+      .site-header, .site-footer, .actions-row, .demo-warning { display: none !important; }
+      .main-content { max-width: none; padding: 0; }
+      .card { box-shadow: none; }
+      .lease-preview { color: #111; }
+    }
   </style>
 </head>
 
@@ -79,16 +106,21 @@
       <h1>Lease Agreement Generator (Demo)</h1>
       <p>
         Interactive questionnaire + PDF output to demonstrate content implementation workflows.
-        Demo only, not legal advice.
       </p>
     </section>
 
-    <section class="two-column">
-      <!-- Left: Form -->
+    <div class="demo-warning">
+      <strong>Demo only:</strong> This generator is for portfolio/demo purposes and is not legal advice.
+      Use a lawyer for real agreements.
+    </div>
+
+    <!-- Single column: Lease details then Preview -->
+    <section class="lease-grid">
+      <!-- Top: Form -->
       <section class="card">
         <h2>Lease details</h2>
         <p class="helper-text">Fill this out and generate a preview + PDF.</p>
-
+<br>
         <form id="leaseForm" class="contact-form">
           <label>
             Date of agreement
@@ -154,7 +186,7 @@
         </form>
       </section>
 
-      <!-- Right: Preview -->
+      <!-- Bottom: Preview -->
       <section class="card">
         <h2>Preview</h2>
         <p class="helper-text">
