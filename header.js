@@ -28,6 +28,7 @@
       <span class="logo-text">
         <span class="logo-name-row">
           <span class="logo-name">Christopher Pink</span>
+          <br>
           <span class="status-pill" title="Job search status">Actively seeking employment</span>
         </span>
         <span class="logo-tagline">Mobile &amp; Web Developer</span>

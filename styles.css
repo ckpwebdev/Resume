@@ -105,7 +105,7 @@ body {
   display: inline-flex;
   align-items: center;
   padding: 0.2rem 0.6rem;
-  border-radius: 999px; /* pill shape */
+  border-radius: 999px;
   border: 1px solid rgba(56, 189, 248, 0.35);
   background: rgba(56, 189, 248, 0.10);
   color: var(--text);
@@ -113,6 +113,13 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
+
+  /* subtle glow */
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.10),
+    0 0 14px rgba(56, 189, 248, 0.22),
+    0 0 28px rgba(56, 189, 248, 0.12);
+  text-shadow: 0 0 10px rgba(56, 189, 248, 0.20);
 }
 
 .logo-tagline {
