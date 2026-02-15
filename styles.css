@@ -94,6 +94,27 @@ body {
   color: var(--accent);
 }
 
+.logo-name-row {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap; /* lets the pill wrap nicely on small widths */
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.2rem 0.6rem;
+  border-radius: 999px; /* pill shape */
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  background: rgba(56, 189, 248, 0.10);
+  color: var(--text);
+  font-size: 0.72rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
 .logo-tagline {
   font-size: 0.85rem;
   color: var(--muted);
