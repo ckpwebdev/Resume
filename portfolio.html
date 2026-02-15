@@ -22,6 +22,33 @@
       max-width: 560px;
       justify-self: center;
     }
+
+    /* LawDepot thank-you section (page-only) */
+    .lawdepot-thanks {
+      margin-top: 2rem;
+      padding: 1.25rem;
+      border-radius: 16px;
+      border: 1px solid var(--border-soft);
+      background: radial-gradient(circle at top left, #111827, var(--card-bg));
+      box-shadow: var(--shadow-soft);
+      text-align: center;
+    }
+
+    .lawdepot-logo {
+      width: min(280px, 85%);
+      max-width: 280px;
+      height: auto;
+      display: block;
+      margin: 0 auto 0.75rem auto;
+      filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.25));
+    }
+
+
+    .lawdepot-thanks p {
+      color: var(--muted);
+      margin: 0.25rem 0 0 0;
+      line-height: 1.5;
+    }
   </style>
 </head>
 
@@ -41,7 +68,7 @@
         <p>
           A questionnaire-style form that generates a preview and downloadable PDF output.
         </p>
-<br>
+        <br>
         <div class="centered-section">
           <a class="btn-primary" href="lease-demo.html">Open demo</a>
         </div>
@@ -52,7 +79,7 @@
         <p>
           A questionnaire-style form that generates a live NDA draft with conditional sections and export options.
         </p>
-<br>
+        <br>
         <div class="centered-section">
           <a class="btn-primary" href="nda-generator.html">Open demo</a>
         </div>
@@ -63,12 +90,28 @@
         <p>
           A vehicle bill of sale generator with conditional clauses, live preview, and PDF export.
         </p>
-<br>
+        <br>
         <div class="centered-section">
           <a class="btn-primary" href="vehicle-bill-of-sale.html">Open demo</a>
         </div>
       </article>
     </section>
+
+    <!-- Thank-you section -->
+<section class="lawdepot-thanks" aria-label="Thanks to LawDepot">
+  <h2>Thank You</h2>
+
+  <img
+    class="lawdepot-logo"
+    src="portfolio-images/lawdepot.png"
+    alt="LawDepot logo" />
+
+  <p>
+    For considering my application for the Content Implementation Specialist position.
+    I appreciate your time and the opportunity to share these interactive template demos.
+  </p>
+</section>
+
   </main>
 
   <footer class="site-footer" id="site-footer"></footer>
