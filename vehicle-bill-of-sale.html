@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Vehicle Bill of Sale Generator | Christopher Pink</title>
+  <link rel="stylesheet" href="styles.css" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <!-- jsPDF (same approach as your lease demo) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <style>
+    /* Single-column layout: form above preview (matches nda-generator.html) */
+    .bos-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.75rem;
+      align-items: start;
+      margin-top: 1.5rem;
+    }
+
+    .bos-card {
+      background: radial-gradient(circle at top left, #111827, var(--card-bg));
+      border-radius: 16px;
+      padding: 1.25rem;
+      box-shadow: var(--shadow-soft);
+      border: 1px solid var(--border-soft);
+    }
+
+    .bos-card h3 { margin-bottom: 0.75rem; font-size: 1.1rem; }
+
+    .demo-warning {
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.08);
+      border-radius: 12px;
+      padding: 0.9rem 1rem;
+      margin: 0 0 1.25rem 0;
+      color: var(--text);
+    }
+    .demo-warning strong { color: var(--accent); }
+
+    .helper-text {
+      color: var(--muted);
+      font-size: 0.93rem;
+      margin-top: 0.35rem;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.9rem 1rem;
+      margin-top: 0.75rem;
+    }
+
+    @media (max-width: 520px) {
+      .field-grid { grid-template-columns: 1fr; }
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    .field label {
+      font-size: 0.9rem;
+      color: var(--text);
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-soft);
+      border-radius: var(--radius);
+      padding: 0.6rem 0.7rem;
+      color: var(--text);
+      font: inherit;
+    }
+
+    .field textarea { min-height: 90px; resize: vertical; }
+
+    .checks {
+      display: grid;
+      gap: 0.45rem;
+      margin-top: 0.5rem;
+    }
+
+    .check {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.92rem;
+      line-height: 1.35;
+    }
+
+    .check input { margin-top: 0.2rem; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      margin-top: 1rem;
+      align-items: center;
+    }
+
+    .btn-secondary {
+      display: inline-block;
+      padding: 0.7rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      background: rgba(15, 23, 42, 0.65);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform var(--transition-fast), border-color var(--transition-fast), filter var(--transition-fast);
+    }
+
+    .btn-secondary:hover {
+      transform: translateY(-1px);
+      border-color: rgba(56, 189, 248, 0.6);
+      filter: brightness(1.05);
+    }
+
+    .preview {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      line-height: 1.5;
+      color: var(--text);
+      font-size: 0.95rem;
+      background: rgba(15, 23, 42, 0.55);
+      border: 1px solid var(--border-soft);
+      border-radius: 12px;
+      padding: 1rem;
+      max-height: none;
+      overflow: visible;
+    }
+
+    .tiny {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+    }
+
+    @media print {
+      body { background: #fff !important; color: #111 !important; }
+      .site-header, .site-footer, .actions, .demo-warning { display: none !important; }
+      .main-content { max-width: none; padding: 0; }
+      .bos-card { box-shadow: none; border: none; padding: 0; background: transparent; }
+      .preview { border: none; background: transparent; padding: 0; color: #111; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="site-header" id="site-header"></header>
+  <br />
+
+  <main class="main-content">
+    <section class="page-header page-header-center">
+      <h1>Motor Vehicle Bill of Sale (Demo)</h1>
+      <p>Questionnaire → live document preview, designed to match the style of my other template demos.</p>
+    </section>
+
+    <div class="demo-warning">
+      <strong>Demo only:</strong> This generator is for portfolio/demo purposes and is not legal advice.
+      Use official forms and/or a lawyer for real transactions.
+    </div>
+
+    <section class="bos-grid" aria-label="Motor vehicle bill of sale generator">
+      <!-- TOP: FORM -->
+      <div class="bos-card">
+        <h3>Vehicle + sale details</h3>
+        <p class="helper-text">Fill out the form; the preview updates instantly and can be copied/downloaded.</p>
+
+        <div class="field-grid">
+          <div class="field">
+            <label for="saleDate">Date of sale</label>
+            <input id="saleDate" type="date" required />
+          </div>
+
+          <div class="field">
+            <label for="province">Province / jurisdiction (demo)</label>
+            <input id="province" type="text" placeholder="e.g., Alberta, Canada" />
+          </div>
+
+          <div class="field">
+            <label for="sellerName">Seller full legal name</label>
+            <input id="sellerName" type="text" placeholder="e.g., Jane Smith" required />
+          </div>
+
+          <div class="field">
+            <label for="sellerAddress">Seller address</label>
+            <input id="sellerAddress" type="text" placeholder="Street, City, Province" required />
+          </div>
+
+          <div class="field">
+            <label for="buyerName">Buyer full legal name</label>
+            <input id="buyerName" type="text" placeholder="e.g., John Doe" required />
+          </div>
+
+          <div class="field">
+            <label for="buyerAddress">Buyer address</label>
+            <input id="buyerAddress" type="text" placeholder="Street, City, Province" required />
+          </div>
+
+          <div class="field">
+            <label for="year">Vehicle year</label>
+            <input id="year" type="number" min="1900" max="2100" placeholder="e.g., 2016" required />
+          </div>
+
+          <div class="field">
+            <label for="make">Make</label>
+            <input id="make" type="text" placeholder="e.g., Toyota" required />
+          </div>
+
+          <div class="field">
+            <label for="model">Model / series</label>
+            <input id="model" type="text" placeholder="e.g., Corolla" required />
+          </div>
+
+          <div class="field">
+            <label for="style">Body style</label>
+            <input id="style" type="text" placeholder="e.g., Sedan" />
+          </div>
+
+          <div class="field">
+            <label for="color">Color</label>
+            <input id="color" type="text" placeholder="e.g., Black" />
+          </div>
+
+          <div class="field">
+            <label for="vin">VIN</label>
+            <input id="vin" type="text" minlength="11" maxlength="17" placeholder="17-character VIN" required />
+          </div>
+
+          <div class="field">
+            <label for="odometer">Odometer (km)</label>
+            <input id="odometer" type="number" min="0" step="1" placeholder="e.g., 142000" />
+          </div>
+
+          <div class="field">
+            <label for="plate">Plate # (optional)</label>
+            <input id="plate" type="text" placeholder="e.g., ABC-1234" />
+          </div>
+
+          <div class="field">
+            <label for="price">Sale price (CAD)</label>
+            <input id="price" type="number" min="0" step="0.01" placeholder="e.g., 8500" required />
+          </div>
+
+          <div class="field">
+            <label for="paymentMethod">Payment method</label>
+            <select id="paymentMethod">
+              <option value="Cash">Cash</option>
+              <option value="E-Transfer">E-Transfer</option>
+              <option value="Certified Cheque">Certified Cheque</option>
+              <option value="Bank Draft">Bank Draft</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          <div class="field" style="grid-column: 1 / -1;">
+            <label for="notes">Notes (optional)</label>
+            <textarea id="notes" placeholder="Any extra terms or notes you want shown in the bill of sale..."></textarea>
+          </div>
+        </div>
+
+        <p class="helper-text" style="margin-top: 0.75rem;">Optional clauses (demo):</p>
+        <div class="checks">
+          <label class="check"><input id="incAsIs" type="checkbox" checked /> Include “as-is / no warranties” clause</label>
+          <label class="check"><input id="incNoLien" type="checkbox" checked /> Include lien/encumbrance statement</label>
+          <label class="check"><input id="incOdometer" type="checkbox" checked /> Include odometer statement (if odometer is provided)</label>
+          <label class="check"><input id="incWitness" type="checkbox" /> Include witness signature line</label>
+        </div>
+
+        <div class="actions">
+          <button class="btn-primary" id="btnPdf" type="button">Generate PDF</button>
+          <button class="btn-secondary" id="btnCopy" type="button">Copy text</button>
+          <button class="btn-secondary" id="btnDownload" type="button">Download .txt</button>
+          <button class="btn-secondary" id="btnPrint" type="button">Print</button>
+          <button class="btn-secondary" id="btnSample" type="button">Fill sample</button>
+          <button class="btn-secondary" id="btnReset" type="button">Reset</button>
+        </div>
+
+        <div class="tiny" id="status" aria-live="polite"></div>
+      </div>
+
+      <!-- BOTTOM: PREVIEW -->
+      <div class="bos-card">
+        <h3>Live preview</h3>
+        <div class="preview" id="preview" role="document"></div>
+        <div class="tiny">Auto-saves in your browser (localStorage).</div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
+
+  <script src="footer.js"></script>
+  <script src="header.js"></script>
+
+  <script>
+    const els = {
+      saleDate: document.getElementById("saleDate"),
+      province: document.getElementById("province"),
+      sellerName: document.getElementById("sellerName"),
+      sellerAddress: document.getElementById("sellerAddress"),
+      buyerName: document.getElementById("buyerName"),
+      buyerAddress: document.getElementById("buyerAddress"),
+
+      year: document.getElementById("year"),
+      make: document.getElementById("make"),
+      model: document.getElementById("model"),
+      style: document.getElementById("style"),
+      color: document.getElementById("color"),
+      vin: document.getElementById("vin"),
+      odometer: document.getElementById("odometer"),
+      plate: document.getElementById("plate"),
+
+      price: document.getElementById("price"),
+      paymentMethod: document.getElementById("paymentMethod"),
+      notes: document.getElementById("notes"),
+
+      incAsIs: document.getElementById("incAsIs"),
+      incNoLien: document.getElementById("incNoLien"),
+      incOdometer: document.getElementById("incOdometer"),
+      incWitness: document.getElementById("incWitness"),
+
+      preview: document.getElementById("preview"),
+      status: document.getElementById("status"),
+
+      btnPdf: document.getElementById("btnPdf"),
+      btnCopy: document.getElementById("btnCopy"),
+      btnDownload: document.getElementById("btnDownload"),
+      btnPrint: document.getElementById("btnPrint"),
+      btnSample: document.getElementById("btnSample"),
+      btnReset: document.getElementById("btnReset"),
+    };
+
+    const STORAGE_KEY = "vehicleBillOfSale_v1";
+
+    function nowISODate() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
+    function getState() {
+      return {
+        saleDate: els.saleDate.value || "",
+        province: els.province.value.trim(),
+
+        sellerName: els.sellerName.value.trim(),
+        sellerAddress: els.sellerAddress.value.trim(),
+        buyerName: els.buyerName.value.trim(),
+        buyerAddress: els.buyerAddress.value.trim(),
+
+        year: els.year.value,
+        make: els.make.value.trim(),
+        model: els.model.value.trim(),
+        style: els.style.value.trim(),
+        color: els.color.value.trim(),
+        vin: els.vin.value.trim(),
+        odometer: els.odometer.value,
+        plate: els.plate.value.trim(),
+
+        price: els.price.value,
+        paymentMethod: els.paymentMethod.value,
+        notes: els.notes.value.trim(),
+
+        incAsIs: els.incAsIs.checked,
+        incNoLien: els.incNoLien.checked,
+        incOdometer: els.incOdometer.checked,
+        incWitness: els.incWitness.checked,
+      };
+    }
+
+    function setState(s) {
+      els.saleDate.value = s.saleDate ?? "";
+      els.province.value = s.province ?? "";
+
+      els.sellerName.value = s.sellerName ?? "";
+      els.sellerAddress.value = s.sellerAddress ?? "";
+      els.buyerName.value = s.buyerName ?? "";
+      els.buyerAddress.value = s.buyerAddress ?? "";
+
+      els.year.value = s.year ?? "";
+      els.make.value = s.make ?? "";
+      els.model.value = s.model ?? "";
+      els.style.value = s.style ?? "";
+      els.color.value = s.color ?? "";
+      els.vin.value = s.vin ?? "";
+      els.odometer.value = s.odometer ?? "";
+      els.plate.value = s.plate ?? "";
+
+      els.price.value = s.price ?? "";
+      els.paymentMethod.value = s.paymentMethod ?? "Cash";
+      els.notes.value = s.notes ?? "";
+
+      els.incAsIs.checked = !!s.incAsIs;
+      els.incNoLien.checked = !!s.incNoLien;
+      els.incOdometer.checked = !!s.incOdometer;
+      els.incWitness.checked = !!s.incWitness;
+    }
+
+    function saveDraft() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(getState()));
+      } catch (_) {}
+    }
+
+    function loadDraft() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        setState(JSON.parse(raw));
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function lineIf(text, placeholder) {
+      return text ? text : (placeholder || "[Enter value]");
+    }
+
+    function money(val) {
+      if (val === null || val === undefined || val === "") return "[Enter amount]";
+      const n = Number(val);
+      if (Number.isNaN(n)) return "[Enter amount]";
+      return n.toFixed(2);
+    }
+
+    // Clause library assembly (like your NDA generator)
+    function renderBillOfSale(s) {
+      const saleDate = s.saleDate || "[Date of sale]";
+      const jurisdiction = s.province || "Alberta, Canada (demo)";
+
+      const sellerName = lineIf(s.sellerName);
+      const sellerAddress = lineIf(s.sellerAddress, "[Seller address]");
+      const buyerName = lineIf(s.buyerName);
+      const buyerAddress = lineIf(s.buyerAddress, "[Buyer address]");
+
+      const year = s.year || "[Year]";
+      const make = lineIf(s.make, "[Make]");
+      const model = lineIf(s.model, "[Model]");
+      const style = s.style ? s.style : "";
+      const color = s.color ? s.color : "";
+      const vin = lineIf(s.vin, "[VIN]");
+      const plate = s.plate ? s.plate : "";
+      const odo = s.odometer ? String(s.odometer) : "";
+
+      const price = money(s.price);
+      const pay = s.paymentMethod || "Cash";
+
+      const notes = s.notes ? s.notes : "";
+
+      const CLAUSES = [
+        { id: "title", when: () => true, text: () => `MOTOR VEHICLE BILL OF SALE (Demo)` },
+        { id: "date", when: () => true, text: () => `Date of sale: ${saleDate}` },
+        { id: "law", when: () => true, text: () => `Jurisdiction: ${jurisdiction}` },
+
+        {
+          id: "parties",
+          when: () => true,
+          text: () =>
+`1. PARTIES
+Seller: ${sellerName}
+Address: ${sellerAddress}
+
+Buyer: ${buyerName}
+Address: ${buyerAddress}`
+        },
+
+        {
+          id: "vehicle",
+          when: () => true,
+          text: () => {
+            const lines = [
+              `2. VEHICLE INFORMATION`,
+              `Year: ${year}`,
+              `Make: ${make}`,
+              `Model/Series: ${model}`,
+              style ? `Body style: ${style}` : null,
+              color ? `Color: ${color}` : null,
+              `VIN: ${vin}`,
+              plate ? `Plate #: ${plate}` : null
+            ].filter(Boolean);
+            return lines.join("\n");
+          }
+        },
+
+        {
+          id: "price-payment",
+          when: () => true,
+          text: () =>
+`3. PURCHASE PRICE
+The purchase price is $${price} CAD, paid via: ${pay}.`
+        },
+
+        {
+          id: "odometer",
+          when: (st) => st.incOdometer && !!odo,
+          text: () =>
+`4. ODOMETER STATEMENT
+The odometer reading at the time of sale is: ${odo} km.`
+        },
+
+        {
+          id: "as-is",
+          when: (st) => st.incAsIs,
+          text: () =>
+`5. “AS-IS” CONDITION
+The vehicle is sold “as-is” without warranties or guarantees, except as expressly stated in writing by the Seller.`
+        },
+
+        {
+          id: "lien",
+          when: (st) => st.incNoLien,
+          text: () =>
+`6. LIENS / ENCUMBRANCES
+The Seller represents that the vehicle is free of liens and encumbrances, unless otherwise disclosed in writing.`
+        },
+
+        {
+          id: "transfer",
+          when: () => true,
+          text: () =>
+`7. TRANSFER OF OWNERSHIP
+The Seller transfers all rights, title, and interest in the vehicle to the Buyer as of the Date of sale, subject to applicable registration requirements.`
+        },
+
+        {
+          id: "notes",
+          when: () => !!notes,
+          text: () =>
+`8. ADDITIONAL TERMS / NOTES
+${notes}`
+        },
+
+        {
+          id: "signatures",
+          when: () => true,
+          text: () =>
+`9. SIGNATURES
+Seller signature: ___________________________   Date: _______________
+Buyer signature:  ___________________________   Date: _______________`
+        },
+
+        {
+          id: "witness",
+          when: (st) => st.incWitness,
+          text: () =>
+`Witness signature: _________________________   Date: _______________`
+        },
+
+        {
+          id: "disclaimer",
+          when: () => true,
+          text: () => `Demo only. Not legal advice.`
+        }
+      ];
+
+      return CLAUSES
+        .filter(c => c.when(s))
+        .map(c => c.text(s))
+        .join("\n\n");
+    }
+
+    function update() {
+      const s = getState();
+      els.preview.textContent = renderBillOfSale(s);
+      saveDraft();
+    }
+
+    function setStatus(msg) {
+      els.status.textContent = msg;
+      if (!msg) return;
+      window.clearTimeout(setStatus._t);
+      setStatus._t = window.setTimeout(() => (els.status.textContent = ""), 2500);
+    }
+
+    function generatePdfFromPreview() {
+      const text = els.preview.textContent || "";
+      if (!text.trim()) {
+        setStatus("Nothing to export yet.");
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      // Title
+      doc.setFontSize(16);
+      doc.text("Motor Vehicle Bill of Sale (Demo)", 14, 18);
+
+      // Body (wrapped + multi-page)
+      doc.setFontSize(11);
+      const marginX = 14;
+      const startY = 28;
+      const lineHeight = 6;
+
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const maxWidth = doc.internal.pageSize.getWidth() - marginX * 2;
+
+      const lines = doc.splitTextToSize(text, maxWidth); // wrap text to page width [web:249]
+      let y = startY;
+
+      for (let i = 0; i < lines.length; i++) {
+        if (y > pageHeight - 14) {
+          doc.addPage();
+          y = 18;
+        }
+        doc.text(lines[i], marginX, y);
+        y += lineHeight;
+      }
+
+      doc.save("vehicle-bill-of-sale-demo.pdf");
+      setStatus("PDF generated.");
+    }
+
+    // Bind events
+    const inputs = Object.values(els).filter(el =>
+      el && (el.tagName === "INPUT" || el.tagName === "SELECT" || el.tagName === "TEXTAREA")
+    );
+    inputs.forEach(el => el.addEventListener("input", update));
+    inputs.forEach(el => el.addEventListener("change", update));
+
+    els.btnPdf.addEventListener("click", generatePdfFromPreview);
+
+    els.btnCopy.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(els.preview.textContent);
+        setStatus("Copied to clipboard.");
+      } catch (e) {
+        setStatus("Copy failed (browser permissions).");
+      }
+    });
+
+    els.btnDownload.addEventListener("click", () => {
+      const blob = new Blob([els.preview.textContent], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "vehicle-bill-of-sale-demo.txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus("Downloaded vehicle-bill-of-sale-demo.txt");
+    });
+
+    els.btnPrint.addEventListener("click", () => window.print());
+
+    els.btnSample.addEventListener("click", () => {
+      setState({
+        saleDate: nowISODate(),
+        province: "Alberta, Canada",
+        sellerName: "Jane Smith",
+        sellerAddress: "Edmonton, Alberta, Canada",
+        buyerName: "John Doe",
+        buyerAddress: "Sherwood Park, Alberta, Canada",
+        year: "2016",
+        make: "Toyota",
+        model: "Corolla",
+        style: "Sedan",
+        color: "Black",
+        vin: "2T1BURHE0GC000000",
+        odometer: "142000",
+        plate: "ABC-1234",
+        price: "8500",
+        paymentMethod: "E-Transfer",
+        notes: "Vehicle includes two sets of keys. Buyer inspected the vehicle and accepted the condition.",
+        incAsIs: true,
+        incNoLien: true,
+        incOdometer: true,
+        incWitness: false
+      });
+      update();
+      setStatus("Sample filled.");
+    });
+
+    els.btnReset.addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      setState({
+        saleDate: "",
+        province: "Alberta, Canada",
+        sellerName: "",
+        sellerAddress: "",
+        buyerName: "",
+        buyerAddress: "",
+        year: "",
+        make: "",
+        model: "",
+        style: "",
+        color: "",
+        vin: "",
+        odometer: "",
+        plate: "",
+        price: "",
+        paymentMethod: "Cash",
+        notes: "",
+        incAsIs: true,
+        incNoLien: true,
+        incOdometer: true,
+        incWitness: false
+      });
+
+      els.saleDate.value = nowISODate();
+      update();
+      setStatus("Reset.");
+    });
+
+    // Init
+    if (!loadDraft()) {
+      els.saleDate.value = nowISODate();
+      els.province.value = "Alberta, Canada";
+    }
+    update();
+  </script>
+</body>
+</html>
