@@ -50,6 +50,7 @@
     /* Preview formatting inside a card */
     .lease-preview {
       white-space: pre-wrap;
+      word-wrap: break-word;
       line-height: 1.5;
       color: var(--muted);
       margin-top: 0.75rem;
@@ -88,6 +89,12 @@
       filter: brightness(1.05);
     }
 
+    .tiny {
+      color: var(--muted);
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+    }
+
     @media print {
       .site-header, .site-footer, .actions-row, .demo-warning { display: none !important; }
       .main-content { max-width: none; padding: 0; }
@@ -119,8 +126,9 @@
       <!-- Top: Form -->
       <section class="card">
         <h2>Lease details</h2>
-        <p class="helper-text">Fill this out and generate a preview + PDF.</p>
-<br>
+        <p class="helper-text">Fill this out; the preview updates instantly and can be copied/downloaded.</p>
+        <br>
+
         <form id="leaseForm" class="contact-form">
           <label>
             Date of agreement
@@ -180,9 +188,15 @@
           </label>
 
           <div class="actions-row">
-            <button type="submit" class="btn-primary">Generate PDF</button>
-            <button type="button" id="btnPreview" class="btn-secondary">Update preview</button>
+            <button class="btn-primary" id="btnPdf" type="button">Generate PDF</button>
+            <button class="btn-secondary" id="btnCopy" type="button">Copy text</button>
+            <button class="btn-secondary" id="btnDownload" type="button">Download .txt</button>
+            <button class="btn-secondary" id="btnPrint" type="button">Print</button>
+            <button class="btn-secondary" id="btnSample" type="button">Fill sample</button>
+            <button class="btn-secondary" id="btnReset" type="button">Reset</button>
           </div>
+
+          <div class="tiny" id="status" aria-live="polite"></div>
         </form>
       </section>
 
@@ -190,9 +204,10 @@
       <section class="card">
         <h2>Preview</h2>
         <p class="helper-text">
-          This preview updates when you click “Update preview” (or after generating the PDF).
+          This preview updates as you type (and auto-saves in your browser).
         </p>
         <pre id="preview" class="lease-preview">Fill in the form to see a preview here.</pre>
+        <div class="tiny">Auto-saves in your browser (localStorage).</div>
       </section>
     </section>
   </main>
@@ -204,27 +219,153 @@
   <script src="header.js"></script>
 
   <script>
-    const form = document.getElementById("leaseForm");
-    const previewEl = document.getElementById("preview");
-    const btnPreview = document.getElementById("btnPreview");
+    const els = {
+      form: document.getElementById("leaseForm"),
+      preview: document.getElementById("preview"),
+      status: document.getElementById("status"),
 
-    // Default date like your original demo
-    document.getElementById("date").valueAsDate = new Date();
+      date: document.getElementById("date"),
+      landlord: document.getElementById("landlord"),
+      landlordAddr: document.getElementById("landlordAddr"),
+      tenant: document.getElementById("tenant"),
+      property: document.getElementById("property"),
+      rent: document.getElementById("rent"),
+      term: document.getElementById("term"),
+      utilities: document.getElementById("utilities"),
+      deposit: document.getElementById("deposit"),
+      pets: document.getElementById("pets"),
 
-    btnPreview.addEventListener("click", () => {
-      const data = readFormData();
-      previewEl.textContent = buildPreviewText(data);
-    });
+      btnPdf: document.getElementById("btnPdf"),
+      btnCopy: document.getElementById("btnCopy"),
+      btnDownload: document.getElementById("btnDownload"),
+      btnPrint: document.getElementById("btnPrint"),
+      btnSample: document.getElementById("btnSample"),
+      btnReset: document.getElementById("btnReset"),
+    };
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
+    const STORAGE_KEY = "leaseAgreementDraft_v1";
+    let statusTimerId = null;
 
-      const data = readFormData();
+    function nowISODate() {
+      const d = new Date();
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
 
-      // Update on submit too
-      previewEl.textContent = buildPreviewText(data);
+    function setStatus(msg) {
+      els.status.textContent = msg || "";
+      if (!msg) return;
 
-      // Generate PDF
+      if (statusTimerId) window.clearTimeout(statusTimerId);
+      statusTimerId = window.setTimeout(() => (els.status.textContent = ""), 2500);
+    }
+
+    function getState() {
+      return {
+        date: els.date.value || "",
+        landlord: els.landlord.value.trim(),
+        landlordAddr: els.landlordAddr.value.trim(),
+        tenant: els.tenant.value.trim(),
+        property: els.property.value.trim(),
+        rent: els.rent.value,
+        term: els.term.value,
+        utilities: (els.utilities.value || "").trim(),
+        deposit: els.deposit.value,
+        pets: els.pets.value
+      };
+    }
+
+    function setState(s) {
+      els.date.value = s.date ?? "";
+      els.landlord.value = s.landlord ?? "";
+      els.landlordAddr.value = s.landlordAddr ?? "";
+      els.tenant.value = s.tenant ?? "";
+      els.property.value = s.property ?? "";
+      els.rent.value = s.rent ?? "";
+      els.term.value = s.term ?? "";
+      els.utilities.value = s.utilities ?? "";
+      els.deposit.value = s.deposit ?? "";
+      els.pets.value = s.pets ?? "No";
+    }
+
+    function saveDraft() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(getState()));
+      } catch (_) {}
+    }
+
+    function loadDraft() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return false;
+        setState(JSON.parse(raw));
+        return true;
+      } catch (_) {
+        return false;
+      }
+    }
+
+    function lineIf(val, placeholder) {
+      const t = (val || "").trim();
+      return t ? t : (placeholder || "[Enter value]");
+    }
+
+    function money(val) {
+      if (val === null || val === undefined || val === "") return "[Enter amount]";
+      const n = Number(val);
+      if (Number.isNaN(n)) return "[Enter amount]";
+      return n.toFixed(2);
+    }
+
+    function buildPreviewText(s) {
+      const date = s.date || "[Date]";
+      const landlord = lineIf(s.landlord, "[Landlord]");
+      const landlordAddr = lineIf(s.landlordAddr, "[Landlord address]");
+      const tenant = lineIf(s.tenant, "[Tenant]");
+      const property = lineIf(s.property, "[Property address]");
+      const rent = money(s.rent);
+      const term = s.term || "[Term]";
+      const utilities = s.utilities ? s.utilities : "None";
+      const deposit = money(s.deposit);
+      const pets = s.pets || "No";
+
+      return (
+`RESIDENTIAL TENANCY AGREEMENT (Demo)
+
+Date: ${date}
+
+Landlord: ${landlord}
+Landlord Address: ${landlordAddr}
+
+Tenant: ${tenant}
+
+Property: ${property}
+
+Rent: $${rent}/month
+Term: ${term}
+Utilities Included: ${utilities}
+Security Deposit: $${deposit}
+Pets: ${pets}
+
+Demo only. Not legal advice.`
+      );
+    }
+
+    function update() {
+      const s = getState();
+      els.preview.textContent = buildPreviewText(s);
+      saveDraft();
+    }
+
+    function generatePdfFromPreview() {
+      const text = els.preview.textContent || "";
+      if (!text.trim()) {
+        setStatus("Nothing to export yet.");
+        return;
+      }
+
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
 
@@ -232,68 +373,106 @@
       doc.text("Residential Tenancy Agreement (Demo)", 14, 18);
 
       doc.setFontSize(11);
-      let y = 30;
+      const marginX = 14;
+      const startY = 28;
+      const lineHeight = 6;
 
-      const lines = [
-        `Date: ${data.date}`,
-        `Landlord: ${data.landlord}`,
-        `Landlord Address: ${data.landlordAddr}`,
-        `Tenant: ${data.tenant}`,
-        `Property: ${data.property}`,
-        `Rent: $${data.rent}/month`,
-        `Term: ${data.term}`,
-        `Utilities: ${data.utilities}`,
-        `Security Deposit: $${data.deposit}`,
-        `Pets: ${data.pets}`,
-        "",
-        "Demo only. Not legal advice."
-      ];
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const maxWidth = doc.internal.pageSize.getWidth() - marginX * 2;
 
-      lines.forEach((line) => {
-        doc.text(line, 14, y);
-        y += 7;
-      });
+      const lines = doc.splitTextToSize(text, maxWidth);
+      let y = startY;
+
+      for (let i = 0; i < lines.length; i++) {
+        if (y > pageHeight - 14) {
+          doc.addPage();
+          y = 18;
+        }
+        doc.text(lines[i], marginX, y);
+        y += lineHeight;
+      }
 
       doc.save("lease-agreement-demo.pdf");
+      setStatus("PDF generated.");
+    }
+
+    // Bind live updates like your other generators
+    const inputEls = Array.from(els.form.querySelectorAll("input, select, textarea"));
+    inputEls.forEach(el => el.addEventListener("input", update));
+    inputEls.forEach(el => el.addEventListener("change", update));
+
+    els.btnPdf.addEventListener("click", generatePdfFromPreview);
+
+    els.btnCopy.addEventListener("click", async () => {
+      try {
+        await navigator.clipboard.writeText(els.preview.textContent || "");
+        setStatus("Copied to clipboard.");
+      } catch (e) {
+        setStatus("Copy failed (browser permissions).");
+      }
     });
 
-    function readFormData() {
-      return {
-        date: document.getElementById("date").value,
-        landlord: document.getElementById("landlord").value.trim(),
-        landlordAddr: document.getElementById("landlordAddr").value.trim(),
-        tenant: document.getElementById("tenant").value.trim(),
-        property: document.getElementById("property").value.trim(),
-        rent: document.getElementById("rent").value,
-        term: document.getElementById("term").value,
-        utilities: (document.getElementById("utilities").value || "None").trim(),
-        deposit: document.getElementById("deposit").value,
-        pets: document.getElementById("pets").value
-      };
+    els.btnDownload.addEventListener("click", () => {
+      const blob = new Blob([els.preview.textContent || ""], { type: "text/plain;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "lease-agreement-demo.txt";
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+      setStatus("Downloaded lease-agreement-demo.txt");
+    });
+
+    els.btnPrint.addEventListener("click", () => window.print());
+
+    els.btnSample.addEventListener("click", () => {
+      setState({
+        date: nowISODate(),
+        landlord: "Jane Smith",
+        landlordAddr: "Edmonton, Alberta, Canada",
+        tenant: "John Doe",
+        property: "Sherwood Park, Alberta, Canada",
+        rent: "1500",
+        term: "12 months fixed",
+        utilities: "Water, Heat",
+        deposit: "1500",
+        pets: "No"
+      });
+      update();
+      setStatus("Sample filled.");
+    });
+
+    els.btnReset.addEventListener("click", () => {
+      localStorage.removeItem(STORAGE_KEY);
+      setState({
+        date: "",
+        landlord: "",
+        landlordAddr: "",
+        tenant: "",
+        property: "",
+        rent: "",
+        term: "",
+        utilities: "",
+        deposit: "",
+        pets: "No"
+      });
+
+      // Default date like your original demo
+      els.date.valueAsDate = new Date();
+      update();
+      setStatus("Reset.");
+    });
+
+    // Init
+    if (!loadDraft()) {
+      els.date.valueAsDate = new Date();
     }
+    update();
 
-    function buildPreviewText(data) {
-      return (
-`RESIDENTIAL TENANCY AGREEMENT (Demo)
-
-Date: ${data.date}
-
-Landlord: ${data.landlord}
-Landlord Address: ${data.landlordAddr}
-
-Tenant: ${data.tenant}
-
-Property: ${data.property}
-
-Rent: $${data.rent}/month
-Term: ${data.term}
-Utilities Included: ${data.utilities}
-Security Deposit: $${data.deposit}
-Pets: ${data.pets}
-
-This is a demo questionnaire-to-document flow for portfolio purposes.`
-      );
-    }
+    // Prevent accidental form submit reload
+    els.form.addEventListener("submit", (e) => e.preventDefault());
   </script>
 </body>
 </html>

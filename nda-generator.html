@@ -6,6 +6,9 @@
   <link rel="stylesheet" href="styles.css" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
+  <!-- jsPDF (to match your 6-option pattern with PDF export) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
   <style>
     /* Page-only tweaks (uses your theme variables) */
     .nda-grid {
@@ -100,6 +103,7 @@
       flex-wrap: wrap;
       gap: 0.75rem;
       margin-top: 1rem;
+      align-items: center;
     }
 
     .btn-secondary {
@@ -238,7 +242,8 @@
         </div>
 
         <div class="actions">
-          <button class="btn-primary" id="btnCopy" type="button">Copy text</button>
+          <button class="btn-primary" id="btnPdf" type="button">Generate PDF</button>
+          <button class="btn-secondary" id="btnCopy" type="button">Copy text</button>
           <button class="btn-secondary" id="btnDownload" type="button">Download .txt</button>
           <button class="btn-secondary" id="btnPrint" type="button">Print</button>
           <button class="btn-secondary" id="btnSample" type="button">Fill sample</button>
@@ -284,6 +289,34 @@
       preview: document.getElementById("preview"),
       status: document.getElementById("status"),
 
+      btnPdf: document.getElementById("btnPdf"),
+      btnCopy: document.get.getElementById ? null : null, /* placeholder to avoid lint confusion */
+    };
+  </script>
+
+  <script>
+    // Rebuild els safely (avoid accidental placeholder issues)
+    const els2 = {
+      agreementType: document.getElementById("agreementType"),
+      effectiveDate: document.getElementById("effectiveDate"),
+      disclosingName: document.getElementById("disclosingName"),
+      disclosingAddress: document.getElementById("disclosingAddress"),
+      receivingName: document.getElementById("receivingName"),
+      receivingAddress: document.getElementById("receivingAddress"),
+      purpose: document.getElementById("purpose"),
+      termYears: document.getElementById("termYears"),
+      governingLaw: document.getElementById("governingLaw"),
+
+      incExclusions: document.getElementById("incExclusions"),
+      incReturnDestroy: document.getElementById("incReturnDestroy"),
+      incCompelled: document.getElementById("incCompelled"),
+      incNoLicense: document.getElementById("incNoLicense"),
+      incRemedies: document.getElementById("incRemedies"),
+
+      preview: document.getElementById("preview"),
+      status: document.getElementById("status"),
+
+      btnPdf: document.getElementById("btnPdf"),
       btnCopy: document.getElementById("btnCopy"),
       btnDownload: document.getElementById("btnDownload"),
       btnPrint: document.getElementById("btnPrint"),
@@ -291,7 +324,11 @@
       btnReset: document.getElementById("btnReset"),
     };
 
+    // Use els2 as the real one
+    const elsRef = els2;
+
     const STORAGE_KEY = "ndaDraft_v1";
+    let statusTimerId = null;
 
     function nowISODate() {
       const d = new Date();
@@ -303,40 +340,40 @@
 
     function getState() {
       return {
-        agreementType: els.agreementType.value,
-        effectiveDate: els.effectiveDate.value || "",
-        disclosingName: els.disclosingName.value.trim(),
-        disclosingAddress: els.disclosingAddress.value.trim(),
-        receivingName: els.receivingName.value.trim(),
-        receivingAddress: els.receivingAddress.value.trim(),
-        purpose: els.purpose.value.trim(),
-        termYears: els.termYears.value,
-        governingLaw: els.governingLaw.value.trim(),
+        agreementType: elsRef.agreementType.value,
+        effectiveDate: elsRef.effectiveDate.value || "",
+        disclosingName: elsRef.disclosingName.value.trim(),
+        disclosingAddress: elsRef.disclosingAddress.value.trim(),
+        receivingName: elsRef.receivingName.value.trim(),
+        receivingAddress: elsRef.receivingAddress.value.trim(),
+        purpose: elsRef.purpose.value.trim(),
+        termYears: elsRef.termYears.value,
+        governingLaw: elsRef.governingLaw.value.trim(),
 
-        incExclusions: els.incExclusions.checked,
-        incReturnDestroy: els.incReturnDestroy.checked,
-        incCompelled: els.incCompelled.checked,
-        incNoLicense: els.incNoLicense.checked,
-        incRemedies: els.incRemedies.checked,
+        incExclusions: elsRef.incExclusions.checked,
+        incReturnDestroy: elsRef.incReturnDestroy.checked,
+        incCompelled: elsRef.incCompelled.checked,
+        incNoLicense: elsRef.incNoLicense.checked,
+        incRemedies: elsRef.incRemedies.checked,
       };
     }
 
     function setState(s) {
-      els.agreementType.value = s.agreementType ?? "mutual";
-      els.effectiveDate.value = s.effectiveDate ?? "";
-      els.disclosingName.value = s.disclosingName ?? "";
-      els.disclosingAddress.value = s.disclosingAddress ?? "";
-      els.receivingName.value = s.receivingName ?? "";
-      els.receivingAddress.value = s.receivingAddress ?? "";
-      els.purpose.value = s.purpose ?? "";
-      els.termYears.value = String(s.termYears ?? "2");
-      els.governingLaw.value = s.governingLaw ?? "";
+      elsRef.agreementType.value = s.agreementType ?? "mutual";
+      elsRef.effectiveDate.value = s.effectiveDate ?? "";
+      elsRef.disclosingName.value = s.disclosingName ?? "";
+      elsRef.disclosingAddress.value = s.disclosingAddress ?? "";
+      elsRef.receivingName.value = s.receivingName ?? "";
+      elsRef.receivingAddress.value = s.receivingAddress ?? "";
+      elsRef.purpose.value = s.purpose ?? "";
+      elsRef.termYears.value = String(s.termYears ?? "2");
+      elsRef.governingLaw.value = s.governingLaw ?? "";
 
-      els.incExclusions.checked = !!s.incExclusions;
-      els.incReturnDestroy.checked = !!s.incReturnDestroy;
-      els.incCompelled.checked = !!s.incCompelled;
-      els.incNoLicense.checked = !!s.incNoLicense;
-      els.incRemedies.checked = !!s.incRemedies;
+      elsRef.incExclusions.checked = !!s.incExclusions;
+      elsRef.incReturnDestroy.checked = !!s.incReturnDestroy;
+      elsRef.incCompelled.checked = !!s.incCompelled;
+      elsRef.incNoLicense.checked = !!s.incNoLicense;
+      elsRef.incRemedies.checked = !!s.incRemedies;
     }
 
     function saveDraft() {
@@ -349,8 +386,7 @@
       try {
         const raw = localStorage.getItem(STORAGE_KEY);
         if (!raw) return false;
-        const s = JSON.parse(raw);
-        setState(s);
+        setState(JSON.parse(raw));
         return true;
       } catch (_) {
         return false;
@@ -382,7 +418,6 @@
 
       const CLAUSES = [
         { id: "title", when: () => true, text: () => `NON-DISCLOSURE AGREEMENT (NDA)` },
-
         { id: "effective", when: () => true, text: () => `Effective Date: ${effective}` },
 
         {
@@ -392,7 +427,8 @@
 `1. PARTIES
 Disclosing Party: ${disclosing}
 ${disclosingAddr}Receiving Party: ${receiving}
-${receivingAddr}`},
+${receivingAddr}`
+        },
 
         {
           id: "purpose",
@@ -400,21 +436,24 @@ ${receivingAddr}`},
           text: () =>
 `2. PURPOSE
 The parties wish to share certain information for the following purpose:
-${purpose}`},
+${purpose}`
+        },
 
         {
           id: "type",
           when: () => true,
           text: () =>
 `3. TYPE OF NDA
-${agreementTypeText}`},
+${agreementTypeText}`
+        },
 
         {
           id: "definition",
           when: () => true,
           text: () =>
 `4. CONFIDENTIAL INFORMATION
-“Confidential Information” means non-public information disclosed in any form (written, oral, electronic, or other) that a reasonable person would understand to be confidential given the nature of the information and the circumstances of disclosure.`},
+“Confidential Information” means non-public information disclosed in any form (written, oral, electronic, or other) that a reasonable person would understand to be confidential given the nature of the information and the circumstances of disclosure.`
+        },
 
         {
           id: "obligations",
@@ -424,7 +463,8 @@ ${agreementTypeText}`},
 The Receiving Party agrees to:
 (a) use Confidential Information only for the Purpose;
 (b) protect Confidential Information using reasonable care; and
-(c) not disclose Confidential Information except as permitted by this Agreement.`},
+(c) not disclose Confidential Information except as permitted by this Agreement.`
+        },
 
         {
           id: "exclusions",
@@ -435,49 +475,56 @@ Confidential Information does not include information that:
 (a) is or becomes public through no fault of the Receiving Party;
 (b) was already known to the Receiving Party without restriction before disclosure;
 (c) is independently developed by the Receiving Party without using Confidential Information; or
-(d) is rightfully obtained from a third party without breach of a duty of confidentiality.`},
+(d) is rightfully obtained from a third party without breach of a duty of confidentiality.`
+        },
 
         {
           id: "compelled",
           when: (st) => st.incCompelled,
           text: () =>
 `7. COMPELLED DISCLOSURE
-If the Receiving Party is legally required to disclose Confidential Information (e.g., by subpoena or court order), the Receiving Party will (to the extent legally permitted) provide prompt notice to the Disclosing Party so the Disclosing Party may seek protective relief. The Receiving Party will disclose only the portion required.`},
+If the Receiving Party is legally required to disclose Confidential Information (e.g., by subpoena or court order), the Receiving Party will (to the extent legally permitted) provide prompt notice to the Disclosing Party so the Disclosing Party may seek protective relief. The Receiving Party will disclose only the portion required.`
+        },
 
         {
           id: "return-destroy",
           when: (st) => st.incReturnDestroy,
           text: () =>
 `8. RETURN OR DESTRUCTION
-Upon written request by the Disclosing Party, the Receiving Party will promptly return or destroy Confidential Information (including copies, summaries, and notes), subject to any legally required retention.`},
+Upon written request by the Disclosing Party, the Receiving Party will promptly return or destroy Confidential Information (including copies, summaries, and notes), subject to any legally required retention.`
+        },
 
         {
           id: "no-license",
           when: (st) => st.incNoLicense,
           text: () =>
 `9. NO LICENSE / NO TRANSFER
-No license or other rights are granted under this Agreement by disclosure of Confidential Information. All Confidential Information remains the property of the Disclosing Party.`},
+No license or other rights are granted under this Agreement by disclosure of Confidential Information. All Confidential Information remains the property of the Disclosing Party.`
+        },
 
         {
           id: "term",
           when: () => true,
           text: () =>
 `10. TERM
-This Agreement begins on the Effective Date and continues for ${term} year(s). Confidentiality obligations survive termination as required to protect Confidential Information disclosed during the term.`},
+This Agreement begins on the Effective Date and continues for ${term} year(s). Confidentiality obligations survive termination as required to protect Confidential Information disclosed during the term.`
+        },
 
         {
           id: "remedies",
           when: (st) => st.incRemedies,
           text: () =>
 `11. REMEDIES
-The parties acknowledge that unauthorized disclosure may cause irreparable harm. The Disclosing Party may seek injunctive relief and any other remedies available at law or in equity.`},
+The parties acknowledge that unauthorized disclosure may cause irreparable harm. The Disclosing Party may seek injunctive relief and any other remedies available at law or in equity.`
+        },
 
         {
           id: "law",
           when: () => true,
           text: () =>
 `12. GOVERNING LAW
-This Agreement is governed by the laws of: ${law}`},
+This Agreement is governed by the laws of: ${law}`
+        },
 
         {
           id: "signatures",
@@ -485,10 +532,10 @@ This Agreement is governed by the laws of: ${law}`},
           text: () =>
 `13. SIGNATURES
 Disclosing Party: ___________________________   Date: _______________
-Receiving Party: ___________________________   Date: _______________`}
+Receiving Party: ___________________________   Date: _______________`
+        }
       ];
 
-      // Assemble document from clause library
       return CLAUSES
         .filter(c => c.when(s))
         .map(c => c.text(s))
@@ -497,37 +544,77 @@ Receiving Party: ___________________________   Date: _______________`}
 
     function update() {
       const s = getState();
-      els.preview.textContent = renderNDA(s);
+      elsRef.preview.textContent = renderNDA(s);
       saveDraft();
     }
 
     function setStatus(msg) {
-      els.status.textContent = msg;
+      elsRef.status.textContent = msg || "";
       if (!msg) return;
-      window.clearTimeout(setStatus._t);
-      setStatus._t = window.setTimeout(() => (els.status.textContent = ""), 2500);
+
+      if (statusTimerId) window.clearTimeout(statusTimerId);
+      statusTimerId = window.setTimeout(() => (elsRef.status.textContent = ""), 2500);
+    }
+
+    function generatePdfFromPreview() {
+      const text = elsRef.preview.textContent || "";
+      if (!text.trim()) {
+        setStatus("Nothing to export yet.");
+        return;
+      }
+
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+
+      doc.setFontSize(16);
+      doc.text("NDA Draft (Demo)", 14, 18);
+
+      doc.setFontSize(11);
+      const marginX = 14;
+      const startY = 28;
+      const lineHeight = 6;
+
+      const pageHeight = doc.internal.pageSize.getHeight();
+      const maxWidth = doc.internal.pageSize.getWidth() - marginX * 2;
+
+      const lines = doc.splitTextToSize(text, maxWidth);
+      let y = startY;
+
+      for (let i = 0; i < lines.length; i++) {
+        if (y > pageHeight - 14) {
+          doc.addPage();
+          y = 18;
+        }
+        doc.text(lines[i], marginX, y);
+        y += lineHeight;
+      }
+
+      doc.save("nda-draft-demo.pdf");
+      setStatus("PDF generated.");
     }
 
     // Events
     const inputs = [
-      els.agreementType, els.effectiveDate, els.disclosingName, els.disclosingAddress,
-      els.receivingName, els.receivingAddress, els.purpose, els.termYears, els.governingLaw,
-      els.incExclusions, els.incReturnDestroy, els.incCompelled, els.incNoLicense, els.incRemedies
+      elsRef.agreementType, elsRef.effectiveDate, elsRef.disclosingName, elsRef.disclosingAddress,
+      elsRef.receivingName, elsRef.receivingAddress, elsRef.purpose, elsRef.termYears, elsRef.governingLaw,
+      elsRef.incExclusions, elsRef.incReturnDestroy, elsRef.incCompelled, elsRef.incNoLicense, elsRef.incRemedies
     ];
     inputs.forEach(el => el.addEventListener("input", update));
     inputs.forEach(el => el.addEventListener("change", update));
 
-    els.btnCopy.addEventListener("click", async () => {
+    elsRef.btnPdf.addEventListener("click", generatePdfFromPreview);
+
+    elsRef.btnCopy.addEventListener("click", async () => {
       try {
-        await navigator.clipboard.writeText(els.preview.textContent);
+        await navigator.clipboard.writeText(elsRef.preview.textContent || "");
         setStatus("Copied to clipboard.");
       } catch (e) {
         setStatus("Copy failed (browser permissions).");
       }
     });
 
-    els.btnDownload.addEventListener("click", () => {
-      const blob = new Blob([els.preview.textContent], { type: "text/plain;charset=utf-8" });
+    elsRef.btnDownload.addEventListener("click", () => {
+      const blob = new Blob([elsRef.preview.textContent || ""], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
@@ -539,9 +626,9 @@ Receiving Party: ___________________________   Date: _______________`}
       setStatus("Downloaded nda-draft.txt");
     });
 
-    els.btnPrint.addEventListener("click", () => window.print());
+    elsRef.btnPrint.addEventListener("click", () => window.print());
 
-    els.btnSample.addEventListener("click", () => {
+    elsRef.btnSample.addEventListener("click", () => {
       setState({
         agreementType: "mutual",
         effectiveDate: nowISODate(),
@@ -562,7 +649,7 @@ Receiving Party: ___________________________   Date: _______________`}
       setStatus("Sample filled.");
     });
 
-    els.btnReset.addEventListener("click", () => {
+    elsRef.btnReset.addEventListener("click", () => {
       localStorage.removeItem(STORAGE_KEY);
       setState({
         agreementType: "mutual",

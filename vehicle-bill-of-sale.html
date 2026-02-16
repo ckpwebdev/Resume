@@ -342,6 +342,7 @@
     };
 
     const STORAGE_KEY = "vehicleBillOfSale_v1";
+    let statusTimerId = null;
 
     function nowISODate() {
       const d = new Date();
@@ -437,7 +438,6 @@
       return n.toFixed(2);
     }
 
-    // Clause library assembly (like your NDA generator)
     function renderBillOfSale(s) {
       const saleDate = s.saleDate || "[Date of sale]";
       const jurisdiction = s.province || "Alberta, Canada (demo)";
@@ -458,7 +458,6 @@
 
       const price = money(s.price);
       const pay = s.paymentMethod || "Cash";
-
       const notes = s.notes ? s.notes : "";
 
       const CLAUSES = [
@@ -580,10 +579,11 @@ Buyer signature:  ___________________________   Date: _______________`
     }
 
     function setStatus(msg) {
-      els.status.textContent = msg;
+      els.status.textContent = msg || "";
       if (!msg) return;
-      window.clearTimeout(setStatus._t);
-      setStatus._t = window.setTimeout(() => (els.status.textContent = ""), 2500);
+
+      if (statusTimerId) window.clearTimeout(statusTimerId);
+      statusTimerId = window.setTimeout(() => (els.status.textContent = ""), 2500);
     }
 
     function generatePdfFromPreview() {
@@ -596,11 +596,9 @@ Buyer signature:  ___________________________   Date: _______________`
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
 
-      // Title
       doc.setFontSize(16);
       doc.text("Motor Vehicle Bill of Sale (Demo)", 14, 18);
 
-      // Body (wrapped + multi-page)
       doc.setFontSize(11);
       const marginX = 14;
       const startY = 28;
@@ -609,7 +607,8 @@ Buyer signature:  ___________________________   Date: _______________`
       const pageHeight = doc.internal.pageSize.getHeight();
       const maxWidth = doc.internal.pageSize.getWidth() - marginX * 2;
 
-      const lines = doc.splitTextToSize(text, maxWidth); // wrap text to page width [web:249]
+      // Wrap to page width
+      const lines = doc.splitTextToSize(text, maxWidth);
       let y = startY;
 
       for (let i = 0; i < lines.length; i++) {
@@ -636,7 +635,7 @@ Buyer signature:  ___________________________   Date: _______________`
 
     els.btnCopy.addEventListener("click", async () => {
       try {
-        await navigator.clipboard.writeText(els.preview.textContent);
+        await navigator.clipboard.writeText(els.preview.textContent || "");
         setStatus("Copied to clipboard.");
       } catch (e) {
         setStatus("Copy failed (browser permissions).");
@@ -644,7 +643,7 @@ Buyer signature:  ___________________________   Date: _______________`
     });
 
     els.btnDownload.addEventListener("click", () => {
-      const blob = new Blob([els.preview.textContent], { type: "text/plain;charset=utf-8" });
+      const blob = new Blob([els.preview.textContent || ""], { type: "text/plain;charset=utf-8" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
