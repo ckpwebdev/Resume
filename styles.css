@@ -94,17 +94,31 @@ body {
 }
 
 .logo-mark {
-  width: 28px;
-  height: 28px;
+  width: 34px;
+  height: 34px;
   border-radius: 999px;
-  background: radial-gradient(circle at 30% 20%, #38bdf8, #0ea5e9);
+
+  /* Layered backgrounds: shine + tint + base */
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.55), transparent 45%),
+    radial-gradient(circle at 35% 30%, #7dd3fc, #0ea5e9 55%, #1e3a8a 120%);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.85rem;
-  font-weight: 700;
-  color: #0b1120;
-  box-shadow: 0 8px 18px rgba(56, 189, 248, 0.45);
+
+  font-size: 0.8rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #071021;
+
+  /* Ring + depth + glow (multi-shadow) */
+  box-shadow:
+    0 0 0 1px rgba(56, 189, 248, 0.45),
+    0 10px 22px rgba(56, 189, 248, 0.18),
+    0 8px 18px rgba(15, 23, 42, 0.65);
+
+  border: 1px solid rgba(255, 255, 255, 0.10);
 }
 
 .logo-text {
