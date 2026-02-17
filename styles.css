@@ -670,6 +670,9 @@ body {
 .tech-icon {
   width: 16px;
   height: 16px;
+  flex: 0 0 auto;
+  display: inline-block;
+  vertical-align: middle;
   object-fit: contain;
   border-radius: 3px;
 }
