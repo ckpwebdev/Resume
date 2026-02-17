@@ -9,7 +9,8 @@
   const links = [
     { href: 'index.html', label: 'Home' },
     { href: 'about.html', label: 'About' },
-    { href: 'resume.html', label: 'Resume/Certifications' },
+    { href: 'resume.html', label: 'Resume' },
+    { href: 'certifications.html', label: 'Certifications' },
     { href: 'portfolio.html', label: 'Portfolio' },
     { href: 'contact.html', label: 'Contact' }
   ];
