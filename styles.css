@@ -64,23 +64,16 @@ body {
   gap: 1rem;
 }
 
-/* Ensure header is the containing block for absolute centering */
-.site-header {
-  position: sticky; /* you already have this */
-  top: 0;           /* you already have this */
-}
-
-/* Center the pill within the header bar */
+/* Centered status pill (desktop/tablet) */
 .header-status {
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  z-index: 2;           /* keeps it above the header background */
-  pointer-events: none; /* prevents it from blocking nav clicks */
+  z-index: 2;
+  pointer-events: none; /* don't block nav clicks */
 }
 
-/* Keep the pill styling you already have */
 .header-status .status-pill {
   pointer-events: auto;
 }
@@ -112,7 +105,7 @@ body {
   letter-spacing: 0.08em;
   color: #071021;
 
-  /* Ring + depth + glow (multi-shadow) */
+  /* Ring + depth + glow */
   box-shadow:
     0 0 0 1px rgba(56, 189, 248, 0.45),
     0 10px 22px rgba(56, 189, 248, 0.18),
@@ -131,7 +124,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 0.6rem;
-  flex-wrap: wrap; /* lets the pill wrap nicely on small widths */
+  flex-wrap: wrap;
 }
 
 .logo-name {
@@ -154,7 +147,6 @@ body {
   letter-spacing: 0.08em;
   text-transform: uppercase;
   white-space: nowrap;
-
   box-shadow:
     0 0 0 1px rgba(56, 189, 248, 0.10),
     0 0 14px rgba(56, 189, 248, 0.22),
@@ -494,6 +486,7 @@ body {
   margin-top: 0.3rem;
 }
 
+/* Embedded PDF preview */
 .pdf-preview {
   width: 100%;
   height: min(75vh, 950px);
@@ -600,7 +593,7 @@ body {
 }
 
 /* =========================
-   Badges (About / Resume)
+   Badges (shared)
    ========================= */
 
 .badge-row {
@@ -713,73 +706,7 @@ body {
 }
 
 /* =========================
-   Responsive
-   ========================= */
-
-@media (max-width: 768px) {
-  .contact-grid { grid-template-columns: 1fr; }
-  .contact-section { max-width: 100%; }
-  .contact-form { gap: 1.2rem; }
-  .badge-row { justify-content: center; }
-
-  .hero-grid {
-    grid-template-columns: 1fr;
-    text-align: left;
-  }
-
-  .hero-image-wrap { margin-top: 1rem; }
-  .hero-image { max-width: 220px; }
-
-  :root {
-    --marquee-elements-displayed: 3;
-    --marquee-height: 90px;
-  }
-
-  .marquee { height: 90px; }
-  .marquee::before,
-  .marquee::after { width: 3rem; }
-
-  .highlight-grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 640px) {
-  .site-header {
-    padding-inline: 5vw;
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .main-nav {
-    margin-top: 0.4rem;
-    flex-wrap: wrap;
-    row-gap: 0.25rem;
-  }
-
-  .main-nav a {
-    margin-left: 0;
-    margin-right: 1rem;
-    margin-top: 0.25rem;
-    font-size: 0.9rem;
-  }
-
-  .main-content { padding: 2.2rem 5vw 3rem; }
-  .hero { margin-bottom: 2.2rem; }
-}
-
-@media (max-width: 480px) {
-  .tech-footer {
-    font-size: 0.75rem;
-    row-gap: 0.2rem;
-  }
-
-  .tech-icon {
-    width: 14px;
-    height: 14px;
-  }
-}
-
-/* =========================
-   Resume Certifications
+   Certifications layout
    ========================= */
 
 .testdome-badge {
@@ -791,7 +718,7 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
-/* Unify hover behavior (later rules win if specificity ties) [web:33] */
+/* Unified hover */
 .badge-card:hover,
 .testdome-badge:hover {
   transform: translateY(-4px);
@@ -807,13 +734,15 @@ body {
   margin-top: 1.25rem;
 }
 
-/* Defensive: prevent grid blowout from long content */
+/* Defensive: prevent grid blowout */
 .certifications-grid > * {
   min-width: 0;
 }
 
 @media (max-width: 900px) {
-  .certifications-grid { grid-template-columns: 1fr; }
+  .certifications-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .cert-panel {
@@ -862,6 +791,52 @@ body {
   border-radius: 10px;
 }
 
+/* Grid-area hooks (used by layout variants) */
+.cert-panel--diploma { grid-area: diploma; }
+.cert-panel--certs { grid-area: certs; }
+.cert-panel--memberships { grid-area: memberships; }
+
+/* Variant: Memberships under Diploma (left), Certificates on right spanning rows */
+.certifications-grid--leftstack {
+  grid-template-columns: minmax(320px, 1fr) minmax(380px, 1.3fr);
+  grid-template-areas:
+    "diploma certs"
+    "memberships certs";
+}
+
+@media (max-width: 900px) {
+  .certifications-grid--leftstack {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "diploma"
+      "memberships"
+      "certs";
+  }
+}
+
+/* Optional alternate variant (kept for flexibility) */
+.certifications-grid--three {
+  grid-template-columns: minmax(320px, 1fr) minmax(380px, 1.3fr);
+  grid-template-areas:
+    "diploma certs"
+    "diploma memberships";
+}
+
+@media (max-width: 900px) {
+  .certifications-grid--three {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "diploma"
+      "certs"
+      "memberships";
+  }
+}
+
+/* Badge grids
+   - Base .badge-grid = 2-column layout with "odd last spans" behavior (kept for other pages)
+   - .badge-grid.badge-grid--responsive = auto-fit grid for certifications page (no spanning last tile)
+*/
+
 .badge-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(200px, 1fr));
@@ -870,7 +845,7 @@ body {
 }
 
 .badge-grid .badge-card {
-  display: flex; /* override inline-flex for grid tiles */
+  display: flex;
   width: 100%;
   justify-content: center;
   align-items: center;
@@ -886,16 +861,47 @@ body {
   object-fit: contain;
 }
 
-/* Center the bottom badge when there's an odd number of items */
+/* Center the bottom badge when there's an odd number of items (base grid only) */
 .badge-grid .badge-card:last-child {
   grid-column: 1 / -1;
   justify-self: center;
   max-width: 420px;
 }
 
-@media (max-width: 520px) {
-  .badge-grid { grid-template-columns: 1fr; }
+/* Responsive modifier (wins over the base rules above) */
+.badge-grid.badge-grid--responsive {
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.1rem;
+}
 
+.badge-grid.badge-grid--responsive .badge-card {
+  padding: 1rem;
+  overflow: hidden; /* prevents any image from spilling out */
+}
+
+/* Kill the "last-child spans" behavior ONLY for responsive grids */
+.badge-grid.badge-grid--responsive .badge-card:last-child {
+  grid-column: auto;
+  justify-self: stretch;
+  max-width: none;
+}
+
+.badge-grid.badge-grid--responsive .badge-image {
+  max-width: 200px;
+  max-height: 130px;
+}
+
+/* SoloLearn: make it visually match others (avoid transform scaling) */
+.badge-grid.badge-grid--responsive .badge-image--sololearn {
+  max-width: 220px;
+}
+
+@media (max-width: 520px) {
+  .badge-grid {
+    grid-template-columns: 1fr;
+  }
+
+  /* base grid cleanup on small screens */
   .badge-grid .badge-card:last-child {
     grid-column: auto;
     max-width: none;
@@ -907,12 +913,96 @@ body {
   }
 }
 
+/* =========================
+   Responsive
+   ========================= */
+
+@media (max-width: 768px) {
+  .contact-grid { grid-template-columns: 1fr; }
+  .contact-section { max-width: 100%; }
+  .contact-form { gap: 1.2rem; }
+  .badge-row { justify-content: center; }
+
+  .hero-grid {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .hero-image-wrap { margin-top: 1rem; }
+  .hero-image { max-width: 220px; }
+
+  :root {
+    --marquee-elements-displayed: 3;
+    --marquee-height: 90px;
+  }
+
+  .marquee { height: 90px; }
+  .marquee::before,
+  .marquee::after { width: 3rem; }
+
+  .highlight-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 640px) {
+  .site-header {
+    padding-inline: 5vw;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  /* Mobile: don't overlap logo/nav */
+  .header-status {
+    position: static;
+    transform: none;
+    pointer-events: auto;
+    margin-top: 0.5rem;
+    align-self: flex-start;
+  }
+
+  .main-nav {
+    margin-top: 0.4rem;
+    flex-wrap: wrap;
+    row-gap: 0.25rem;
+  }
+
+  .main-nav a {
+    margin-left: 0;
+    margin-right: 1rem;
+    margin-top: 0.25rem;
+    font-size: 0.9rem;
+  }
+
+  .main-content { padding: 2.2rem 5vw 3rem; }
+  .hero { margin-bottom: 2.2rem; }
+}
+
+@media (max-width: 480px) {
+  .tech-footer {
+    font-size: 0.75rem;
+    row-gap: 0.2rem;
+  }
+
+  .tech-icon {
+    width: 14px;
+    height: 14px;
+  }
+}
+
+/* Motion accessibility */
 @media (prefers-reduced-motion: reduce) {
   .badge-card,
   .testdome-badge,
-  .diploma-card { transition: none; }
+  .diploma-card,
+  .card,
+  .btn-primary {
+    transition: none;
+  }
 
   .badge-card:hover,
   .testdome-badge:hover,
-  .diploma-card:hover { transform: none; }
+  .diploma-card:hover,
+  .card:hover,
+  .btn-primary:hover {
+    transform: none;
+  }
 }

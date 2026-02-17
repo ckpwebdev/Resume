@@ -16,12 +16,13 @@
       <p>These credentials highlight my commitment to strong technical skills and professional standards.</p>
     </section>
 
-    <!-- Two-column layout: Diploma left, certificates right -->
-    <section class="certifications-grid" aria-label="Diploma and certifications">
-      <!-- Left column -->
-      <div class="cert-panel">
+    <!-- Layout: Left column = Diploma + Memberships, Right column = Certificates -->
+    <section class="certifications-grid certifications-grid--leftstack" aria-label="Diploma, memberships, and certificates">
+
+      <!-- Diploma (left top) -->
+      <section class="cert-panel cert-panel--diploma" aria-label="Diploma">
         <h3>Diploma</h3>
-        <p class="helper">Mobile &amp; Web Developer (Honours), Sundance College.</p>
+        <p class="helper">Mobile &amp; Web Developer (Honours).</p>
 
         <a
           href="resume-images/diploma.png"
@@ -37,14 +38,36 @@
             loading="lazy"
           />
         </a>
-      </div>
+      </section>
 
-      <!-- Right column -->
-      <div class="cert-panel">
+      <!-- Memberships (left bottom) -->
+      <section class="cert-panel cert-panel--memberships" aria-label="Memberships">
+        <h3>Memberships</h3>
+        <p class="helper">Professional memberships and affiliations.</p>
+
+        <div class="badge-grid badge-grid--responsive">
+          <a
+            href="https://www.credential.net/6986b5a2-c214-49e5-b4bb-a270a176175e#acc.p4FmQY7Z"
+            target="_blank"
+            rel="noopener"
+            class="badge-card"
+          >
+            <img
+              src="https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/112657732"
+              alt="CIPS Alberta Membership certificate for Christopher Pink"
+              class="badge-image"
+              loading="lazy"
+            />
+          </a>
+        </div>
+      </section>
+
+      <!-- Certificates (right, spans both rows) -->
+      <section class="cert-panel cert-panel--certs" aria-label="Certificates">
         <h3>Certificates</h3>
         <p class="helper">Click a badge to view the credential.</p>
 
-        <div class="badge-grid">
+        <div class="badge-grid badge-grid--responsive">
           <a
             href="https://certificates.simnetonline.com/a00e0c1f-77a8-4229-badf-da058744e1fd#acc.U041tCrj"
             target="_blank"
@@ -74,20 +97,6 @@
           </a>
 
           <a
-            href="https://www.credential.net/6986b5a2-c214-49e5-b4bb-a270a176175e#acc.p4FmQY7Z"
-            target="_blank"
-            rel="noopener"
-            class="badge-card"
-          >
-            <img
-              src="https://api.accredible.com/v1/frontend/credential_website_embed_image/certificate/112657732"
-              alt="CIPS Alberta Membership certificate for Christopher Pink"
-              class="badge-image"
-              loading="lazy"
-            />
-          </a>
-
-          <a
             href="https://www.testdome.com/certificates/35a84a7d8f494a66bcc3f9ea07447c71"
             target="_blank"
             rel="noopener"
@@ -110,12 +119,12 @@
             <img
               src="resume-images/sololearn.png"
               alt="SoloLearn Introduction to SQL Certificate badge awarded to Christopher Pink."
-              class="badge-image"
+              class="badge-image badge-image--sololearn"
               loading="lazy"
             />
           </a>
         </div>
-      </div>
+      </section>
     </section>
   </main>
 
