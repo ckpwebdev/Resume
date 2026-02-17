@@ -24,20 +24,20 @@
     .join('\n      ');
 
   header.innerHTML = `
-    <div class="logo">
-      <span class="logo-mark">CKP</span>
-      <span class="logo-text">
-        <span class="logo-name-row">
-          <span class="logo-name">Christopher Pink</span>
-          <br>
-          <span class="status-pill" title="Job search status">Actively seeking employment</span>
-        </span>
-        <span class="logo-tagline">Mobile &amp; Web Developer</span>
-      </span>
-    </div>
+  <div class="logo">
+    <span class="logo-mark">CKP</span>
+    <span class="logo-text">
+      <span class="logo-name">Christopher Pink</span>
+      <span class="logo-tagline">Mobile &amp; Web Developer</span>
+    </span>
+  </div>
 
-    <nav class="main-nav">
-      ${navLinks}
-    </nav>
-  `;
+  <div class="header-status" aria-label="Job search status">
+    <span class="status-pill" title="Job search status">Actively seeking employment</span>
+  </div>
+
+  <nav class="main-nav">
+    ${navLinks}
+  </nav>
+`;
 })();

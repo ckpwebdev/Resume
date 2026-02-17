@@ -64,6 +64,27 @@ body {
   gap: 1rem;
 }
 
+/* Ensure header is the containing block for absolute centering */
+.site-header {
+  position: sticky; /* you already have this */
+  top: 0;           /* you already have this */
+}
+
+/* Center the pill within the header bar */
+.header-status {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 2;           /* keeps it above the header background */
+  pointer-events: none; /* prevents it from blocking nav clicks */
+}
+
+/* Keep the pill styling you already have */
+.header-status .status-pill {
+  pointer-events: auto;
+}
+
 /* Logo cluster injected by header.js */
 
 .logo {
