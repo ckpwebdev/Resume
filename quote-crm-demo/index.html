@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quote Request + CRM Lead Tracker Demo</title>
+  <meta
+    name="description"
+    content="Portfolio demo: quote request form connected to a CRM-style lead tracker built with HTML, CSS, and JavaScript."
+  />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="site-shell">
+    <header class="hero">
+      <div class="hero__text">
+        <p class="eyebrow">Portfolio Project</p>
+        <h1>Quote Request Form + CRM Lead Tracker</h1>
+        <p class="hero__description">
+          A front-end demo that simulates how a website quote request can flow
+          into a small CRM dashboard for tracking, qualifying, and updating leads.
+        </p>
+      </div>
+
+      <div class="hero__badges">
+        <span class="badge">HTML</span>
+        <span class="badge">CSS</span>
+        <span class="badge">JavaScript</span>
+        <span class="badge">Local Storage</span>
+      </div>
+    </header>
+
+    <section class="notice">
+      <strong>Demo note:</strong> This version stores data in your browser using
+      localStorage.
+    </section>
+
+    <nav class="tabs">
+      <button class="tab-btn active" data-tab="formView">Public Quote Form</button>
+      <button class="tab-btn" data-tab="crmView">CRM Dashboard</button>
+    </nav>
+
+    <main>
+      <section id="formView" class="tab-panel active">
+        <div class="two-column">
+          <section class="panel">
+            <div class="panel__header">
+              <h2>Request a Quote</h2>
+              <p>Simulates the public-facing form a potential client would complete.</p>
+            </div>
+
+            <form id="quoteForm" novalidate>
+              <div class="form-grid">
+                <div class="field">
+                  <label for="fullName">Full name *</label>
+                  <input type="text" id="fullName" name="fullName" required />
+                </div>
+
+                <div class="field">
+                  <label for="company">Company name</label>
+                  <input type="text" id="company" name="company" />
+                </div>
+
+                <div class="field">
+                  <label for="email">Email *</label>
+                  <input type="email" id="email" name="email" required />
+                </div>
+
+                <div class="field">
+                  <label for="phone">Phone *</label>
+                  <input type="tel" id="phone" name="phone" required />
+                </div>
+
+                <div class="field">
+                  <label for="budget">Estimated budget *</label>
+                  <select id="budget" name="budget" required>
+                    <option value="">Select a budget</option>
+                    <option>Under $2,000</option>
+                    <option>$2,000 - $5,000</option>
+                    <option>$5,000 - $10,000</option>
+                    <option>$10,000 - $20,000</option>
+                    <option>$20,000+</option>
+                  </select>
+                </div>
+
+                <div class="field">
+                  <label for="timeline">Project timeline *</label>
+                  <select id="timeline" name="timeline" required>
+                    <option value="">Select a timeline</option>
+                    <option>ASAP</option>
+                    <option>1 month</option>
+                    <option>2-3 months</option>
+                    <option>Flexible</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="field">
+                <label>Services needed *</label>
+                <div class="checkbox-grid">
+                  <label class="checkbox-card">
+                    <input type="checkbox" name="services" value="Web Design" />
+                    <span>Web Design</span>
+                  </label>
+
+                  <label class="checkbox-card">
+                    <input type="checkbox" name="services" value="Website Redesign" />
+                    <span>Website Redesign</span>
+                  </label>
+
+                  <label class="checkbox-card">
+                    <input type="checkbox" name="services" value="SEO" />
+                    <span>SEO</span>
+                  </label>
+
+                  <label class="checkbox-card">
+                    <input type="checkbox" name="services" value="E-Commerce" />
+                    <span>E-Commerce</span>
+                  </label>
+
+                  <label class="checkbox-card">
+                    <input type="checkbox" name="services" value="CMS Setup" />
+                    <span>CMS Setup</span>
+                  </label>
+
+                  <label class="checkbox-card">
+                    <input type="checkbox" name="services" value="CRM Integration" />
+                    <span>CRM Integration</span>
+                  </label>
+
+                  <label class="checkbox-card">
+                    <input type="checkbox" name="services" value="Maintenance" />
+                    <span>Maintenance</span>
+                  </label>
+
+                  <label class="checkbox-card">
+                    <input type="checkbox" name="services" value="Landing Pages" />
+                    <span>Landing Pages</span>
+                  </label>
+                </div>
+                <p id="servicesError" class="error-text"></p>
+              </div>
+
+              <div class="field">
+                <label>Preferred contact method *</label>
+                <div class="radio-row">
+                  <label><input type="radio" name="preferredContact" value="Email" required /> Email</label>
+                  <label><input type="radio" name="preferredContact" value="Phone" required /> Phone</label>
+                  <label><input type="radio" name="preferredContact" value="Either" required /> Either</label>
+                </div>
+              </div>
+
+              <div class="field">
+                <label for="details">Project details *</label>
+                <textarea
+                  id="details"
+                  name="details"
+                  rows="6"
+                  required
+                  placeholder="Tell us about your goals, audience, features, and any deadlines."
+                ></textarea>
+              </div>
+
+              <div class="field checkbox-inline">
+                <label>
+                  <input type="checkbox" id="consent" name="consent" required />
+                  I understand this is a portfolio demo and agree to the sample submission.
+                </label>
+              </div>
+
+              <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Submit Quote Request</button>
+                <button type="reset" class="btn btn-secondary">Clear Form</button>
+              </div>
+            </form>
+          </section>
+
+          <aside class="panel">
+            <div class="panel__header">
+              <h2>What this demonstrates</h2>
+            </div>
+
+            <ul class="feature-list">
+              <li>Client-side form validation</li>
+              <li>Lead creation and scoring</li>
+              <li>CRM-style lead statuses</li>
+              <li>Notes and follow-up tracking</li>
+              <li>Filtering and search</li>
+              <li>CSV export for reporting</li>
+            </ul>
+
+            <div class="info-card">
+              <h3>Production upgrade</h3>
+              <p>
+                In a real app, localStorage would be replaced with a backend API,
+                database, authentication, and server-side validation.
+              </p>
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section id="crmView" class="tab-panel">
+        <div class="stats-grid">
+          <article class="stat-card">
+            <p>Total Leads</p>
+            <h3 id="totalCount">0</h3>
+          </article>
+
+          <article class="stat-card">
+            <p>New</p>
+            <h3 id="newCount">0</h3>
+          </article>
+
+          <article class="stat-card">
+            <p>Contacted</p>
+            <h3 id="contactedCount">0</h3>
+          </article>
+
+          <article class="stat-card">
+            <p>Qualified</p>
+            <h3 id="qualifiedCount">0</h3>
+          </article>
+
+          <article class="stat-card">
+            <p>Won</p>
+            <h3 id="wonCount">0</h3>
+          </article>
+        </div>
+
+        <div class="dashboard-grid">
+          <section class="panel">
+            <div class="panel__header">
+              <h2>Leads</h2>
+              <p>Track status, search records, and export data.</p>
+            </div>
+
+            <div class="toolbar">
+              <input
+                type="text"
+                id="searchInput"
+                placeholder="Search by name, company, email, or service"
+              />
+
+              <select id="statusFilter">
+                <option value="All">All statuses</option>
+                <option value="New">New</option>
+                <option value="Contacted">Contacted</option>
+                <option value="Qualified">Qualified</option>
+                <option value="Proposal Sent">Proposal Sent</option>
+                <option value="Won">Won</option>
+                <option value="Lost">Lost</option>
+              </select>
+            </div>
+
+            <div class="toolbar toolbar--buttons">
+              <button id="seedDemoBtn" class="btn btn-secondary">Seed Demo Data</button>
+              <button id="exportBtn" class="btn btn-secondary">Export CSV</button>
+              <button id="resetBtn" class="btn btn-danger">Reset Leads</button>
+            </div>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Lead</th>
+                    <th>Services</th>
+                    <th>Budget</th>
+                    <th>Status</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody id="leadsTableBody"></tbody>
+              </table>
+            </div>
+          </section>
+
+          <aside class="panel detail-panel">
+            <div id="detailEmpty" class="detail-empty">
+              <h2>Select a lead</h2>
+              <p>Click a row in the table to view and update lead details.</p>
+            </div>
+
+            <div id="detailContent" class="hidden">
+              <div class="detail-top">
+                <div>
+                  <h2 id="detailName">Lead Name</h2>
+                  <p id="detailCompany" class="muted">Company</p>
+                </div>
+                <button id="toggleStarBtn" class="btn btn-secondary">Mark Priority</button>
+              </div>
+
+              <div class="detail-block">
+                <label for="detailStatus">Lead status</label>
+                <select id="detailStatus">
+                  <option value="New">New</option>
+                  <option value="Contacted">Contacted</option>
+                  <option value="Qualified">Qualified</option>
+                  <option value="Proposal Sent">Proposal Sent</option>
+                  <option value="Won">Won</option>
+                  <option value="Lost">Lost</option>
+                </select>
+              </div>
+
+              <div id="leadMeta" class="detail-block"></div>
+              <div id="leadBody" class="detail-block"></div>
+
+              <div class="detail-block">
+                <h3>Internal notes</h3>
+                <ul id="noteList" class="notes-list"></ul>
+
+                <textarea
+                  id="noteInput"
+                  rows="4"
+                  placeholder="Add a follow-up note, quote update, or next step..."
+                ></textarea>
+
+                <button id="addNoteBtn" class="btn btn-primary">Add Note</button>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
