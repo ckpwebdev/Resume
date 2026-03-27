@@ -10,37 +10,38 @@
   />
   <link rel="stylesheet" href="styles.css" />
 </head>
-<body>
-  <div class="site-shell">
-    <header class="hero">
-      <div class="hero__text">
-        <p class="eyebrow">Portfolio Project</p>
-        <h1>Quote Request Form + CRM Lead Tracker</h1>
-        <p class="hero__description">
-          A front-end demo that simulates how a website quote request can flow
-          into a small CRM dashboard for tracking, qualifying, and updating leads.
-        </p>
-      </div>
+<body class="quote-crm-demo-page">
+  <header class="site-header" id="site-header"></header>
 
-      <div class="hero__badges">
-        <span class="badge">HTML</span>
-        <span class="badge">CSS</span>
-        <span class="badge">JavaScript</span>
-        <span class="badge">Local Storage</span>
-      </div>
-    </header>
+  <main class="main-content">
+    <div class="site-shell quote-crm-demo">
+      <header class="hero">
+        <div class="hero__text">
+          <p class="eyebrow">Portfolio Project</p>
+          <h1>Quote Request Form + CRM Lead Tracker</h1>
+          <p class="hero__description">
+            A front-end demo that simulates how a website quote request can flow
+            into a small CRM dashboard for tracking, qualifying, and updating leads.
+          </p>
+        </div>
 
-    <section class="notice">
-      <strong>Demo note:</strong> This version stores data in your browser using
-      localStorage.
-    </section>
+        <div class="hero__badges">
+          <span class="badge">HTML</span>
+          <span class="badge">CSS</span>
+          <span class="badge">JavaScript</span>
+          <span class="badge">Local Storage</span>
+        </div>
+      </header>
 
-    <nav class="tabs">
-      <button class="tab-btn active" data-tab="formView">Public Quote Form</button>
-      <button class="tab-btn" data-tab="crmView">CRM Dashboard</button>
-    </nav>
+      <section class="notice">
+        <strong>Demo note:</strong> This version stores data in your browser using localStorage.
+      </section>
 
-    <main>
+      <nav class="tabs">
+        <button class="tab-btn active" data-tab="formView">Public Quote Form</button>
+        <button class="tab-btn" data-tab="crmView">CRM Dashboard</button>
+      </nav>
+
       <section id="formView" class="tab-panel active">
         <div class="two-column">
           <section class="panel">
@@ -322,11 +323,15 @@
           </aside>
         </div>
       </section>
-    </main>
-  </div>
+    </div>
+  </main>
+
+  <footer class="site-footer" id="site-footer"></footer>
 
   <div id="toast" class="toast"></div>
 
-  <script src="script.js"></script>
+  <script src="header.js"></script>
+  <script src="footer.js"></script>
+  <script src="quote-crm-demo.js"></script>
 </body>
 </html>
