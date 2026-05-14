@@ -35,6 +35,72 @@
       max-width: 560px;
       justify-self: center;
     }
+
+    /* Websites developed section */
+    .portfolio-section {
+      margin-top: 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .section-heading {
+      text-align: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .website-card {
+      padding: 0;
+      overflow: hidden;
+    }
+
+    .website-card-link {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 1.5rem;
+      text-decoration: none;
+      color: inherit;
+      height: 100%;
+    }
+
+    .website-card-link:hover {
+      transform: translateY(-2px);
+    }
+
+    .website-logo {
+      max-width: 200px;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+    }
+
+    .website-card-content {
+      text-align: center;
+    }
+
+    .website-card-content h3 {
+      margin-bottom: 0.75rem;
+    }
+
+    .website-card-content p {
+      margin-bottom: 1rem;
+    }
+
+    .website-card-button {
+      display: inline-block;
+    }
+
+    @media (min-width: 700px) {
+      .website-card-link {
+        flex-direction: row;
+        justify-content: center;
+        text-align: left;
+      }
+
+      .website-card-content {
+        text-align: left;
+      }
+    }
   </style>
 </head>
 
@@ -93,6 +159,34 @@
           <a class="btn-primary" href="vehicle-bill-of-sale.html">Open demo</a>
         </div>
       </article>
+    </section>
+
+    <section class="portfolio-section">
+      <div class="section-heading">
+        <h2>Websites Developed</h2>
+      </div>
+
+      <section class="highlight-grid portfolio-grid">
+        <article class="card website-card">
+          <a
+            class="website-card-link"
+            href="https://nterio.shoutcms.net/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <img
+              src="portfolio-images/Nterio-Logo.png"
+              alt="Nterio logo"
+              class="website-logo"
+            />
+            <div class="website-card-content">
+              <h3>Nterio</h3>
+              <p>A live website example showcasing production web development work.</p>
+              <span class="btn-primary website-card-button">Visit website</span>
+            </div>
+          </a>
+        </article>
+      </section>
     </section>
   </main>
 
